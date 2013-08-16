@@ -1,8 +1,8 @@
+#!/usr/bin/env node
 /**	Command Line Interface
   *	
   **/
-
-var $ = require('./src/Utils.js'),
+var $ = require('../src/Utils.js'),
 	argv = require('optimist')
 			.options({
 				'o':{
@@ -17,7 +17,7 @@ var $ = require('./src/Utils.js'),
 			})
 			.argv,
 	path = require('path'),
-	FruitJS = require('./fruit.js');
+	FruitJS = require('../fruit.js');
 
 var manifest = argv._[0];
 

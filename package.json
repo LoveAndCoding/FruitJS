@@ -1,10 +1,12 @@
 {
   "name": "fruitjs",
   "preferGlobal": true,
-  "version": "0.5.2",
+  "version": "0.5.3",
   "author": "Andrew Hushbeck <andrew.hushbeck@imgineme.com> (http://imgineme.com)",
   "description": "FruitJS (pronounced Fruit Juice) is a tool for compiling markdown pages into technical documentation sites.",
-  "bin": "./cli.js",
+  "bin": {
+    "fruitjs": "bin/cli"
+  },
   "main": "./fruit.js",
   "keywords": [],
   "dependencies": {
