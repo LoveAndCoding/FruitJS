@@ -2,9 +2,7 @@
   *	
   **/
 
-var FruitJS = require('./fruit.js'),
-	$ = require('./src/Utils.js'),
-	path = require('path'),
+var $ = require('./src/Utils.js'),
 	argv = require('optimist')
 			.options({
 				'o':{
@@ -17,43 +15,41 @@ var FruitJS = require('./fruit.js'),
 						'description':'Flag indicating that all markdown should be exported to a single page'
 					}
 			})
-			.argv;
+			.argv,
+	path = require('path'),
+	FruitJS = require('./fruit.js');
 
 var manifest = argv._[0];
 
-function getRelativePath(file) {
-	return path.resolve(path.dirname(manifest)+path.sep+file);
-}
-
 $.PromiseReader(manifest).then(function (fest) {
 	json = JSON.parse(fest);
-	try{
-	var doc = new FruitJS(json.name || "Docs");
+	
+	var doc = new FruitJS(json.name || "Docs", path.resolve(argv.o));
 	
 	for(var c in json.css)
-		doc.addCSS(getRelativePath(json.css[c]));
+		doc.addCSS($.GetRelativePath(manifest, json.css[c]));
 	
 	for(var l in json.less)
-		doc.addLESS(getRelativePath(json.less[l]));
+		doc.addLESS($.GetRelativePath(manifest, json.less[l]));
 	
 	for(var i in json.images)
-		doc.addImage(getRelativePath(json.images[i]));
+		doc.addImage($.GetRelativePath(manifest, json.images[i]));
 	if(json.imageTitle)
-		doc.addImage(getRelativePath(json.imageTitle)).setImageTitle(path.basename(json.imageTitle));
+		doc.addImage($.GetRelativePath(manifest, json.imageTitle)).setImageTitle(path.basename(json.imageTitle));
 	
 	for(var p in json.pages)
-		doc.addPage(getRelativePath(json.pages[p]));
+		doc.addPage($.GetRelativePath(manifest, json.pages[p]));
 	
-	doc.buildMenu(json.tocLevel || 6, argv.s).then(function () {
-				return doc.render(argv.s);
+	doc.buildMenu(json.tocLevel || 6, argv.s || json.singlePage).then(function () {
+				return doc.render(argv.s || json.singlePage);
 			})
 		.then(function () {
-				console.log('Rendered');
+				console.log('Files were rendered succussfully and placed in the folder '+path.resolve(argv.o));
 			},
 			function (err) {
 				console.error(err);
 			});
-	}catch(e){console.error(e);}
+	
 }, function (err) {
 	console.error('Unable to read file '+manifest);
 	console.error(err);

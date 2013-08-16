@@ -13,7 +13,7 @@ var $ = require('./Utils.js'),
 	DefaultTheme = require('./Theme.js'),
 	TOC = require('./TOC.js');
 
-function Doc (Name) {
+function Doc (Name, Dir) {
 	// init
 	
 	// Added content
@@ -24,7 +24,7 @@ function Doc (Name) {
 	this.__pages  = [],
 	
 	// Defaults
-	this.__outputTo = 'output',
+	this.__outputTo = Dir || 'output',
 	this.__tocLevel = 2;
 	
 	this.__name = Name || 'Documentation';
@@ -243,7 +243,6 @@ Doc.prototype.render = function (singlePage) {
 		);
 	}
 	
-	
 	if(singlePage) {
 		var writeOut = rsvp.all(otherRenders).then(
 				function (pieces) {
@@ -254,24 +253,29 @@ Doc.prototype.render = function (singlePage) {
 								output += allPages[p];
 							}
 							// Write out to the file
-							fs.writeFile(self.__outputTo + $.sep + 'index.html', output + pieces[2]);
+							return $.PromiseWriter(self.__outputTo + $.sep + 'index.html', output + pieces[2]);
 						});
 				}
 			);
 	} else {
 		var writeOut = rsvp.all(pageRenders).then(
 				function (allPages) {
+					var allWrite = [];
 					// allPages index should be a 1 to 1 with
 					// this.__pages, so we can use that mapping
 					for(var p in self.__pages) {
 						// As in other places in the code, 0 is used
 						// for the index page, all other pages will
 						// use their title as the file name
-						var filename = singlePage || p == 0 ? 'index.html' : self.__pages[p].getTitle() + '.html';
+						var filename = p == 0 ? 'index.html' : self.__pages[p].getTitle() + '.html';
 						
 						// Write out to the file
-						fs.writeFile(self.__outputTo + $.sep + filename, allPages[p]);
+						allWrite.push(
+								$.PromiseWriter(self.__outputTo + $.sep + filename, allPages[p])
+							);
 					}
+					
+					return rsvp.all(allWrite);
 				}
 			);
 	}
