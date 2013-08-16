@@ -1,0 +1,33 @@
+<%
+	function navStr(item, tabs) {
+		var str = '';
+		if(_.isString(item)) {
+			str = "\n"+getTabs(tabs)+"<li>" + item;
+		} else if (_.isObject(item)) {
+			str = "\n"+getTabs(tabs)+"<li>";
+			if(item.URL)
+				str += '<a href="' + item.URL + '">'+item.Name+'</a>';
+			else
+				str += item.Name
+			
+			if(item.SubMenu)
+				str += "\n"+getTabs(tabs+1)+"<ul>"+
+						_.reduce(_.map(item.SubMenu, function (i) { return navStr(i, tabs+2); }), printNav)+
+						"\n"+getTabs(tabs+1)+"</ul>";
+		}
+		return str;
+	}
+	
+	function printNav(memo, item) {
+		return memo + item;
+	}
+	
+	function getTabs(num) {
+		return new Array(num != num ? 2 : num + 1).join("\t");
+	}
+%>
+		<section id="navigation">
+			<h1><a href="index.html"><% if(Logo != "") {%><img src="images/<%= Logo %>" alt="<%= Title %>"><% } else {%><%= Title %><% } %></a></h1>
+			<nav><%= _.reduce(_.map(Menu, function (i) { return navStr(i, 5); }), printNav) %>
+			</nav>
+		</section>
