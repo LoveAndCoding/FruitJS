@@ -57,8 +57,21 @@ function GetRelativePath(origin, file) {
 	return path.resolve(path.dirname(origin)+path.sep+file);
 }
 
-function MarkedToID ( obj ) {
-	return obj.text.toLowerCase().replace(/[^\w]+/g, '-');
+function MarkedToID ( obj, ids ) {
+	var baseid = obj.text.toLowerCase().replace(/[^\w]+/g, '-');
+	
+	if(baseid[0] == '-')
+		baseid = 'id'+baseid;
+	
+	if(ids && ids.indexOf(baseid) >= 0) {
+		var uid = 0;
+		do {
+			uid++;
+		} while(ids.indexOf(baseid+uid) >= 0);
+		baseid += uid;
+	}
+	
+	return baseid;
 }
 
 module.exports = {

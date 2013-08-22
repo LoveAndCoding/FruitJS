@@ -69,7 +69,8 @@ TOC.MarkdownToMenu = function (mdObj, title, url, lvls) {
 		pageSub = new TOC(),
 		entryStack = [pageSub],
 		levelStack = [1],
-		firstHeader = true;
+		firstHeader = true,
+		ids = [];
 	
 	page.addSubMenu(pageSub);
 	
@@ -81,7 +82,7 @@ TOC.MarkdownToMenu = function (mdObj, title, url, lvls) {
 			var heading = mdObj[i];
 			
 			if(firstHeader && heading.depth == 1 && title == heading.text) {
-				page.setURL(url + '#' + $.MarkedToID(heading));
+				page.setURL(url + '#' + $.MarkedToID(heading, ids));
 				firstHeader = false;
 				continue;
 			}
@@ -121,7 +122,9 @@ TOC.MarkdownToMenu = function (mdObj, title, url, lvls) {
 			
 			// Get the contents of the item
 			var name = marked.inlineLexer(heading.text, []) || 'Unknown Section',
-				id = $.MarkedToID(heading); // Assume ID already set
+				id = $.MarkedToID(heading, ids); // Assume ID already set
+			
+			ids.push(id);
 			
 			// Add a new entry
 			entryStack[0].addPage(name, url + '#' + id);
