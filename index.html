@@ -1,0 +1,422 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>FruitJS Docs</title>
+		<link rel="stylesheet" href="css/styles.css">
+		<script src="http://use.edgefonts.net/source-sans-pro:n3,n4,i4,n7,n9.js"></script>
+	</head>
+	<body>
+		<section id="navigation">
+			<h1><a href="index.html"><img src="images/FruitJSLogo.png" alt="FruitJS Docs"></a></h1>
+			<nav>
+					<li><a href="index.html#fruitjs">FruitJS</a>
+						<ul>
+							<li><a href="index.html#what-is-fruitjs-">What is FruitJS?</a>
+							<li><a href="index.html#how-can-i-use-fruitjs-">How can I use FruitJS?</a>
+							<li><a href="index.html#but-what-about-x-">But what about <em>X</em>?</a>
+						</ul>
+					<li><a href="index.html#command-line-interface">Command Line Interface</a>
+						<ul>
+							<li><a href="index.html#manifest-file">Manifest File</a>
+							<li><a href="index.html#command-line-arguments">Command Line Arguments</a>
+						</ul>
+					<li><a href="index.html#code-api">Code API</a>
+						<ul>
+							<li><a href="index.html#constructor">Constructor</a>
+							<li><a href="index.html#id-addcss-"><code>addCSS</code></a>
+							<li><a href="index.html#id-addimage-"><code>addImage</code></a>
+							<li><a href="index.html#id-addjs-"><code>addJS</code></a>
+							<li><a href="index.html#id-addless-"><code>addLESS</code></a>
+							<li><a href="index.html#id-addpage-"><code>addPage</code></a>
+							<li><a href="index.html#id-buildmenu-"><code>buildMenu</code></a>
+							<li><a href="index.html#id-render-"><code>render</code></a>
+							<li><a href="index.html#id-setimagetitle-"><code>setImageTitle</code></a>
+						</ul>
+			</nav>
+		</section>
+		<article>
+			<h1 id="fruitjs">FruitJS</h1>
+<p>Welcome to the FruitJS Documentation. This is your resource for learning how
+to use FruitJS, as well as your guide when you forget. And, of course, this
+documentation is created with FruitJS.</p>
+<h2 id="what-is-fruitjs-">What is FruitJS?</h2>
+<p>FruitJS (pronounced Fruit Juice) is a documentation generator built in Node.
+It is meant to be a simple way to write your documentation in Markdown, and
+have it converted to a nice site easily. Markdown has a lot of niceties in
+terms of displaying code snippets, and quick edits, but isn&#39;t easy for 
+those who are just looking for some technical documentation. That&#39;s when a
+nice API or documentation site is key, and that&#39;s where FruitJS comes in.
+Simply create your pages in Markdown, tell FruitJS how to find it, and sit
+back as your documentation becomes oh so sweet.</p>
+<h2 id="how-can-i-use-fruitjs-">How can I use FruitJS?</h2>
+<p>I&#39;m glad you&#39;re so anxious to dive in. Or at least, I&#39;m glad I could lead you
+to that. Getting started is pretty simple. Just use <code>npm</code> to install FruitJS,
+and run it from the command line. You also can require it in a JS file if
+you&#39;d like to generate things on your own in JS.</p>
+<pre><code>npm install FruitJS</code></pre>
+<p>From the command line, you can then do the following:</p>
+<pre><code>fruitjs manifest.json</code></pre>
+<p>Or, if you prefer a script file, something like the following would work best:</p>
+<pre><code>var FruitJS = new (require(&#39;FruitJS&#39;))(&quot;My Documentation&quot;);
+
+FruitJS.addPage(&#39;my.markdown&#39;);
+FruitJS.buildMenu().then(
+    function () {
+        FruitJS.render();
+    })
+    .then(null,
+    function (err) {
+        // Error handling goes here
+    });</code></pre>
+<p>Then you&#39;re site is all ready to go. By default we output your site to a folder
+called output (wild, I know) right in that same folder it was run in.</p>
+<h2 id="but-what-about-x-">But what about <em>X</em>?</h2>
+<p>That&#39;s a great question. I have a lot of plans to include many features I feel
+people will find helpful. I&#39;ve got plans for extra navigation categories, themes, 
+and a few other things. I&#39;ve got big plans for what I hope this to be, and I 
+hope to create them as quickly as I can. That said, this is just the beginning. 
+This is the ground floor we&#39;re building on here. So there is still a lot of room 
+to grow. If you&#39;d like to suggest features you&#39;d love to see, let me know on the 
+GitHub issue tracker. Or, feel free to fork and go to town on your own.</p>
+
+		</article>		<article>
+			<h1 id="command-line-interface">Command Line Interface</h1>
+<p>The command line interface is likely the primary interface
+in which you will work with. It is meant to be as straight-
+forward as possible, only needing a small json file, and 
+some optional flags and parameters for modifying behavior.</p>
+<h2 id="manifest-file">Manifest File</h2>
+<p>The manifest file is the way to tell what pages you want to
+compile into your HTML site. It will list pages, assets,
+images, any extra CSS or JS, and whatever else you want to
+include. The format is a simple JSON file included somewhere
+in your folder structure. <strong>Any file references in the JSON
+file should be relative to the manifest files location on
+disk.</strong></p>
+<h3 id="properties">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>String</td>
+<td><code>&#39;&#39;</code></td>
+<td>The name of your site</td>
+</tr>
+<tr>
+<td><code>pages</code></td>
+<td>Array</td>
+<td><code>[]</code></td>
+<td>An array of markdown pages that will be compiled into HTML. The order of the pages will be preserved as the order in the navigation, with the first item being the homepage.</td>
+</tr>
+<tr>
+<td><code>css</code></td>
+<td>Array</td>
+<td><code>[]</code></td>
+<td>An array of additional CSS files you&#39;d like to include on your pages. All of the CSS files will be added to each page.</td>
+</tr>
+<tr>
+<td><code>less</code></td>
+<td>Array</td>
+<td><code>[]</code></td>
+<td>An array of additional LESS files you&#39;d like to include on your pages. Files will be compiled to CSS and added to each page.</td>
+</tr>
+<tr>
+<td><code>js</code></td>
+<td>Array</td>
+<td><code>[]</code></td>
+<td>An array of additional JS files you&#39;d like to include on your pages. All of the JS files will be added to each page.</td>
+</tr>
+<tr>
+<td><code>images</code></td>
+<td>Array</td>
+<td><code>[]</code></td>
+<td>An array of image files you&#39;d like to include on your pages. Files will be put in the <code>images</code> folder, and can be referred to in your markdown from that folder</td>
+</tr>
+<tr>
+<td><code>imageTitle</code></td>
+<td>FilePath</td>
+<td><code>null</code></td>
+<td>A file path to an image or logo you&#39;d like to display instead of your site name on each page</td>
+</tr>
+<tr>
+<td><code>singlePage</code></td>
+<td>Boolean</td>
+<td><code>false</code></td>
+<td>A flag for if all the markdown should be compiled to a single page.</td>
+</tr>
+<tr>
+<td><code>tocLevel</code></td>
+<td>Number</td>
+<td><code>6</code></td>
+<td>Number of heading levels to use in the automatically generated menu</td>
+</tr>
+</tbody>
+</table>
+<h2 id="command-line-arguments">Command Line Arguments</h2>
+<h3 id="id-output-filepath-or-o-filepath-"><code>-output FILEPATH</code> or <code>-o FILEPATH</code></h3>
+<p>Folder that rendered HTML should be placed into. File path
+should be absolute or relative to where the script is being
+run at.</p>
+<h4 id="format">Format</h4>
+<pre><code>-o export/to/this/folder/
+-output &quot;also/works/like this&quot;</code></pre>
+<h3 id="id-singlepage-or-s-"><code>-singlePage</code> or <code>-s</code></h3>
+<p>Flag that can be set to indicate that output should be on
+a single page.</p>
+<h4 id="format1">Format</h4>
+<pre><code>-s</code></pre>
+
+		</article>		<article>
+			<h1 id="code-api">Code API</h1>
+<h2 id="constructor">Constructor</h2>
+<p>Creates a new <code>FruitJS</code> object. This object is the primary object for creating and 
+rendering documentation sites.</p>
+<h3 id="parameters">Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Yes</td>
+<td><code>String</code></td>
+<td>The title of the documentation. This will be used as the title in the browser window and on the page.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="returns">Returns</h3>
+<p>New <code>FruitJS</code> object</p>
+<h3 id="examples">Examples</h3>
+<pre><code>var FruitJS = require(&#39;FruitJS&#39;);
+var docs = new FruitJS(&quot;My Documentation Site&quot;)</code></pre>
+<h2 id="id-addcss-"><code>addCSS</code></h2>
+<p>Adds a CSS file to the output. This file will be copied over to a css folder in the output
+directory and will be included on every page.</p>
+<h3 id="parameters1">Parameters</h3>
+<table>
+    <tr>
+        <th>Required</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>Yes</td>
+        <td><code>String</code></td>
+        <td>The path to the file, relative to where the script is being run</td>
+    </tr>
+</table>
+
+<h3 id="returns1">Returns</h3>
+<p>Returns <code>FruitJS</code> object after adding script to allow chainability.</p>
+<h3 id="examples1">Examples</h3>
+<pre><code>docs.addCSS(&#39;myStyles.css&#39;);</code></pre>
+<h2 id="id-addimage-"><code>addImage</code></h2>
+<p>Adds an image file to the output. This file will be copied over to a images folder in 
+the output directory. To use this image in your script, simply use it the same as you
+would in standard markup, but refer to the image in the images directory.</p>
+<h3 id="parameters2">Parameters</h3>
+<table>
+    <tr>
+        <th>Required</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>Yes</td>
+        <td><code>String</code></td>
+        <td>The path to the file, relative to where the script is being run</td>
+    </tr>
+</table>
+
+<h3 id="returns2">Returns</h3>
+<p>Returns <code>FruitJS</code> object after adding script to allow chainability.</p>
+<h3 id="examples2">Examples</h3>
+<pre><code>docs.addImage(&#39;myLogo.png&#39;);</code></pre>
+<p>In Markdown, you can place this image now using</p>
+<pre><code>![My Companies Name](images/myLogo.png)</code></pre>
+<h2 id="id-addjs-"><code>addJS</code></h2>
+<p>Adds a JS file to the output. This file will be copied over to a js folder in the output
+directory and will be included on every page.</p>
+<h3 id="parameters3">Parameters</h3>
+<table>
+    <tr>
+        <th>Required</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>Yes</td>
+        <td><code>String</code></td>
+        <td>The path to the file, relative to where the script is being run</td>
+    </tr>
+</table>
+
+<h3 id="returns3">Returns</h3>
+<p>Returns <code>FruitJS</code> object after adding script to allow chainability.</p>
+<h3 id="examples3">Examples</h3>
+<pre><code>docs.addJS(&#39;myStyles.css&#39;);</code></pre>
+<h2 id="id-addless-"><code>addLESS</code></h2>
+<p>Compiles a LESS file and adds it to the list of CSS for each page to use. This file
+will be copied over to a css folder in the output directory. <strong>Note: The name for
+this file will have the same name as the LESS file, except it will change the
+extension to .css if it is not already. This means you should note try to include
+a LESS file and CSS file that have the same name.</strong></p>
+<h3 id="parameters4">Parameters</h3>
+<table>
+    <tr>
+        <th>Required</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>Yes</td>
+        <td><code>String</code></td>
+        <td>The path to the file, relative to where the script is being run</td>
+    </tr>
+</table>
+
+<h3 id="returns4">Returns</h3>
+<p>Returns <code>FruitJS</code> object after adding script to allow chainability.</p>
+<h3 id="examples4">Examples</h3>
+<pre><code>docs.addLESS(&#39;myLESSStyles.less&#39;);</code></pre>
+<h2 id="id-addpage-"><code>addPage</code></h2>
+<p>Adds a markdown page. This page will be added to automatic page menu building, and
+headings in this file will be parsed into submenu entries. The optional last
+parameter is used for marking a page as the homepage. If more than 1 page is marked
+as the homepage, the last one marked will become the homepage. If no homepage is
+provided, the first page added will be used. The order in the menu will be the order
+that the pages are added in.</p>
+<h3 id="parameters5">Parameters</h3>
+<table>
+    <tr>
+        <th>Required</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>Yes</td>
+        <td><code>String</code></td>
+        <td>The path to the file, relative to where the script is being run</td>
+    </tr>
+    <tr>
+        <td>Yes</td>
+        <td><code>String</code></td>
+        <td>The title of the page. This will be used when building the menu, and in the window title</td>
+    </tr>
+    <tr>
+        <td>No</td>
+        <td><code>Boolean</code></td>
+        <td><code>TRUE</code> if this page should be used as the homepage, <code>FALSE</code> otherwise. <em>Defaults to FALSE</em></td>
+    </tr>
+</table>
+
+<h3 id="returns5">Returns</h3>
+<p>Returns <code>FruitJS</code> object after adding script to allow chainability.</p>
+<h3 id="examples5">Examples</h3>
+<pre><code>docs.addPage(&#39;intro.md&#39;, &#39;Getting Started&#39;, true)
+    .addPage(&#39;section1.md&#39;, &#39;REST API&#39;);</code></pre>
+<h2 id="id-buildmenu-"><code>buildMenu</code></h2>
+<p>This will use all current pages, and build an automatic menu from them. This will
+parse through each page to determine the header levels, and build submenus based
+on the headers of each page. This will override any previously created menus.</p>
+<p>Submenus will be created based on the heading level of the current and the previous
+heading. That is to say, if the current heading is an <code>h3</code>, and the last heading
+was an <code>h2</code>, we will put the <code>h3</code> heading as a submenu under the <code>h2</code> heading.</p>
+<p><strong>Note: This process is asynchronous. A <a href="https://github.com/tildeio/rsvp.js">promise</a> is returned that will resolve when
+the menu has finished being created. <a href="#render">Rendering</a> should be done after this is
+complete.</strong></p>
+<h3 id="parameters6">Parameters</h3>
+<table>
+    <tr>
+        <th>Required</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>No</td>
+        <td><code>Integer</code></td>
+        <td>
+            The level of headings to include in a submenu. For example, a value of 
+            <code>2</code> will include <code>h1</code> and <code>h2</code> tags, 
+            but will not include <code>h3</code> or above in the menu generation
+        </td>
+    </tr>
+</table>
+
+<h3 id="returns6">Returns</h3>
+<p>A <a href="https://github.com/tildeio/rsvp.js"><code>Promise</code> object</a>. Promise will be resolved upon completion of the task, or
+rejected if we encounter an error.</p>
+<h3 id="examples6">Examples</h3>
+<pre><code>docs.buildMenu(3)
+    .then( function () {
+        console.log(&#39;Menu was created&#39;);
+    });</code></pre>
+<h2 id="id-render-"><code>render</code></h2>
+<p>This compiles all of the markdown, and writes the files to a folder <code>output</code> in the
+directory where the script is being run.</p>
+<p><strong>Note: This process is asynchronous. A <a href="https://github.com/tildeio/rsvp.js">promise</a> is returned that will resolve when
+the markdown has finished being written out.</strong></p>
+<h3 id="parameters7">Parameters</h3>
+<table>
+    <tr>
+        <th>Required</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td colspan="3">
+            NONE
+        </td>
+    </tr>
+</table>
+
+<h3 id="returns7">Returns</h3>
+<p>A <a href="https://github.com/tildeio/rsvp.js"><code>Promise</code> object</a>. Promise will be resolved upon completion of the task, or
+rejected if we encounter an error.</p>
+<h3 id="examples7">Examples</h3>
+<pre><code>docs.render()
+    .then( function () {
+        console.log(&#39;Our documentation has come into existence!&#39;);
+    });</code></pre>
+<h2 id="id-setimagetitle-"><code>setImageTitle</code></h2>
+<p>Allows you to set a specific image that has been added to be displayed as a logo in
+the navigation area (with the default theme). This image will be used instead of your
+title on the main page (though the original title set will still be used on for the
+window title). The <code>alt</code> text will be your original title text as well.</p>
+<h3 id="parameters8">Parameters</h3>
+<table>
+    <tr>
+        <th>Required</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>Yes</td>
+        <td><code>String</code></td>
+        <td>Name of the image that was added previous to use as a logo</td>
+    </tr>
+</table>
+
+<h3 id="returns8">Returns</h3>
+<p>Returns <code>FruitJS</code> object after adding script to allow chainability.</p>
+<h3 id="examples8">Examples</h3>
+<pre><code>docs.addImage(&#39;folder/myLogo.png&#39;)
+    .setImageTitle(&#39;myLogo.png&#39;);</code></pre>
+
+		</article>
+		<script type="text/javascript" src="js/script.js"></script>
+	</body>
+</html>
