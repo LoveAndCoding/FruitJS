@@ -11,17 +11,16 @@ var $ = require('./Utils.js'),
 
 function MarkDocTheme (Doc) {
 	// DEFAULT VALUES
-	this.__header = 'themes/default/header.html';
-	this.__nav = 'themes/default/nav.html';
-	this.__footer = 'themes/default/footer.html';
+	this.__header = path.resolve(__dirname, '../themes/default/header.html');
+	this.__nav = path.resolve(__dirname, '../themes/default/nav.html');
+	this.__footer = path.resolve(__dirname, '../themes/default/footer.html');
 	
 	// Add Styles
 	this.addContent(Doc);
 }
 MarkDocTheme.prototype.addContent = function (Doc) {
-	console.log(__dirname);
-	Doc.addLESS(path.resolve('themes/default/css/styles.less'));
-	Doc.addJS(path.resolve('themes/default/js/script.js'));
+	Doc.addLESS(path.resolve(__dirname, '../themes/default/css/styles.less'));
+	Doc.addJS(path.resolve(__dirname, '../themes/default/js/script.js'));
 };
 MarkDocTheme.prototype.renderHeader = function (opts) {
 	return this.__render(this.__header, opts);
@@ -43,7 +42,11 @@ MarkDocTheme.prototype.renderFooter = function (opts) {
 MarkDocTheme.prototype.__render = function (file, opts) {
 	return rsvp.Promise(function (res, rej) {
 			$.PromiseReader(file).then(function (tmpl) {
-				res( _.template(tmpl)(opts) );
+				try {
+					res( _.template(tmpl)(opts) );
+				} catch(e) {
+					rej( e.stack );
+				}
 			}, rej);
 		});
 };

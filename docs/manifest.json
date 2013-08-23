@@ -3,7 +3,7 @@
 	"less":[],
 	"images":[],
 	"pages":["intro.md", "commandline.md", "document.md"],
-	"imageTitle":"../bin/FruitJSLogo.png",
+	"imageTitle":"../images/FruitJSLogo.png",
 	"name":"FruitJS Docs",
 	"tocLevel": 2,
 	"singlePage": true

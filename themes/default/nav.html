@@ -10,7 +10,7 @@
 			else
 				str += item.Name
 			
-			if(item.SubMenu)
+			if(item.SubMenu && item.SubMenu.length > 0)
 				str += "\n"+getTabs(tabs+1)+"<ul>"+
 						_.reduce(_.map(item.SubMenu, function (i) { return navStr(i, tabs+2); }), printNav)+
 						"\n"+getTabs(tabs+1)+"</ul>";
