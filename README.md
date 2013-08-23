@@ -1,5 +1,7 @@
 #FruitJS
 
+[Take a look at our documentation](http://ktsashes.github.io/FruitJS)
+
 FruitJS (pronounced Fruit Juice) is a simple yet powerful converter to turn markdown
 into HTML pages. It was created for the purpose of writing technical documentation
 and API information in Markdown, and then converting it to a live site. FruitJS is

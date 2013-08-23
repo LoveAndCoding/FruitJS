@@ -19,20 +19,23 @@ back as your documentation becomes oh so sweet.
 
 I'm glad you're so anxious to dive in. Or at least, I'm glad I could lead you
 to that. Getting started is pretty simple. Just use `npm` to install FruitJS,
-require it in a small JS script, and use the appropriate methods to add pages
-to the site. After that, just tell it where you want your stuff, and let it
-do the rest. In code, it looks something like this:
+and run it from the command line. You also can require it in a JS file if
+you'd like to generate things on your own in JS.
 
 	npm install FruitJS
 
-And then in your script
+From the command line, you can then do the following:
+
+	fruitjs manifest.json
+
+Or, if you prefer a script file, something like the following would work best:
 
 	var FruitJS = new (require('FruitJS'))("My Documentation");
 	
 	FruitJS.addPage('my.markdown');
 	FruitJS.buildMenu().then(
 		function () {
-			FruitJS.compile();
+			FruitJS.render();
 		})
 		.then(null,
 		function (err) {
@@ -40,17 +43,14 @@ And then in your script
 		});
 
 Then you're site is all ready to go. By default we output your site to a folder
-called output (wild, I know) right in that same folder. Still working on the
-API to change that folder, but it is all coming in time. Speaking of, that
-sounds like a great way to segway into our next question.
+called output (wild, I know) right in that same folder it was run in.
 
 ## But what about *X*?
 
 That's a great question. I have a lot of plans to include many features I feel
-people will find helpful. I've got plans for using a manifest to generate a
-site, extra navigation categories, themes, etcetera, etcetera. I've got big
-plans for what I hope this to be, and I hope to create them as quickly as I
-can. That said, this is just the beginning. This is the ground floor we're
-building on here. So there is still a lot of room to grow. If you'd like to
-suggest features you'd love to see, let me know on the GitHub issue tracker.
-Or, feel free to fork and go to town on your own.
+people will find helpful. I've got plans for extra navigation categories, themes, 
+and a few other things. I've got big plans for what I hope this to be, and I 
+hope to create them as quickly as I can. That said, this is just the beginning. 
+This is the ground floor we're building on here. So there is still a lot of room 
+to grow. If you'd like to suggest features you'd love to see, let me know on the 
+GitHub issue tracker. Or, feel free to fork and go to town on your own.
