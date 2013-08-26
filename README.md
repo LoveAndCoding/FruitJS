@@ -12,6 +12,11 @@ built on Node.js and can be used as an include or as a command line tool.
 The simple steps to get started are install it via NPM, then use the command line
 tool to compile your pages to HTML.
 
+```
+npm install -g fruitjs
+fruitjs manifest.json
+```
+
 ## Manifest File
 
 The manifest file is used to tell the script which pieces should be compiled to HTML.
