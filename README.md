@@ -19,15 +19,15 @@ It is a JSON file that should look something like this:
 
 ```json
 {
-	name       : "Site Name",
-	pages      : ["page1.md", "folder/page2.markdown"],
-	css        : ["styles.css"],
-	less       : ["otherstyles.less"],
-	js         : ["Extra JS Code.js"],
-	images     : ["example1.png", "example2.jpg"],
-	imageTitle : "path/to/logo.jpg",
-	singlePage : true,
-	tocLevel   : 4
+	"name"       : "Site Name",
+	"pages"      : ["page1.md", "folder/page2.markdown"],
+	"css"        : ["styles.css"],
+	"less"       : ["otherstyles.less"],
+	"js"         : ["Extra JS Code.js"],
+	"images"     : ["example1.png", "example2.jpg"],
+	"imageTitle" : "path/to/logo.jpg",
+	"singlePage" : true,
+	"tocLevel"   : 4
 }
 ```
 
