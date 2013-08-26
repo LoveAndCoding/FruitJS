@@ -20,6 +20,7 @@ function MarkDocTheme (Doc) {
 }
 MarkDocTheme.prototype.addContent = function (Doc) {
 	Doc.addLESS(path.resolve(__dirname, '../themes/default/css/styles.less'));
+	Doc.addLESS(path.resolve(__dirname, '../themes/default/css/print.css'));
 	Doc.addJS(path.resolve(__dirname, '../themes/default/js/script.js'));
 };
 MarkDocTheme.prototype.renderHeader = function (opts) {

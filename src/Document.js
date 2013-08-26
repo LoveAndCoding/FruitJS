@@ -91,7 +91,7 @@ Doc.prototype.render = function (singlePage) {
 		copyCommands.push(
 			$.PromiseCopy(
 					this.__css[c],
-					this.__outputTo + $.sep + sheet
+					this.__outputTo + $.sep + 'css' + $.sep + sheet
 				)
 			);
 		this.__css[c] = 'css/' + sheet;
