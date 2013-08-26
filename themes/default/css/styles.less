@@ -47,6 +47,9 @@ table {
 html {
 	height: 100%;
 }
+body {
+	padding-bottom: 35px;
+}
 html, body {
 	min-height: 100%;
 	font-family: source-sans-pro, sans-serif;
@@ -60,6 +63,10 @@ html, body {
 	height: 100%;
 	overflow: auto;
 	padding: 0px 10px;
+	
+	nav {
+		padding-bottom: 35px;
+	}
 	
 	h1 {
 		padding: 10px 5px 0px;
@@ -138,6 +145,9 @@ article {
 		padding: 5px 60px;
 		color: #4F4F4F;
 	}
+	dl {
+		margin: 5px 5px 10px 40px;
+	}
 	ul {
 		margin: 5px 5px 10px 40px;
 		list-style-type: disc;
@@ -146,13 +156,16 @@ article {
 		list-style-type: numeric;
 		margin: 5px 5px 10px 35px;
 	}
-	ol, ul {
+	ol, ul, dl {
 		ol, ul {
 			margin-bottom: 0px;
 		}
 	}
-	li {
+	li, dt {
 		margin: 3px;
+	}
+	dd {
+		margin: 3px 40px;
 	}
 	p {
 		margin: 1.5em 1em;
@@ -169,6 +182,7 @@ article {
 		font-size: 16px;
 		line-height: 20px;
 		padding: 10px;
+		overflow: auto;
 		
 		code {
 			background-color: transparent;
@@ -188,11 +202,15 @@ article {
 	table {
 		border-spacing: 3px;
 		border-collapse: separate;
-		max-width: 40em;
+		width: 45em;
 		margin-left: 45px;
 	}
 	tr {
 		padding: 3px;
+		
+		&:nth-child(2n) {
+			background-color: #EEEEFF;
+		}
 	}
 	th {
 		background-color: #DDDDEE;
