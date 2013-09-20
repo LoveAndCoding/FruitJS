@@ -38,5 +38,11 @@ It is a JSON file that should look something like this:
 
 For more information, read the [documentation for the manifest][2].
 
+##License
+
+FruitJS is under MIT license, and is free to modify, use and distribute within the terms 
+of that license. For full license, check out the [LICENSE][3] file.
+
  [1]: http://ktsashes.github.io/FruitJS
  [2]: http://ktsashes.github.io/FruitJS/index.html#manifest-file
+ [3]: http://github.com/ktsashes/FruitJS/blob/master/LICENSE
