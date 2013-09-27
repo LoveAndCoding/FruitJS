@@ -58,8 +58,11 @@ function findUniqueID (existing, id) {
 Page.prototype.preProcessPage = function (md) {
 	
 	if(!this.getTitle()) {
-		if(md[0] && md[0].type == 'heading' && md[0].depth == 1 && md[0].text)
-			this.setTitle(md[0].text);
+		// Go until we find a heading
+		for(var m = 0, l = md.length; m < l && !this.getTitle(); m++) {
+			if(md[m] && md[m].type == 'heading' && md[m].depth == 1 && md[m].text)
+				this.setTitle(md[m].text);
+		}
 	}
 	
 	return md;
