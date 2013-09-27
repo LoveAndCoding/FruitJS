@@ -1,0 +1,12 @@
+{
+	"preRenderTemplates" : ["header.html", "nav.html"],
+	"postRenderTemplates" : ["footer.html"],
+	"less" : ["css/styles.less", "css/print.css"],
+	"js" : ["js/script.js"],
+	"parameters" : {
+			"docsBackground" : "#FFFFFF",
+			"docsTextColor" : "#000000",
+			"navBackground" : "#202020",
+			"navTextColor" : "#FFFFFF"
+		}
+}

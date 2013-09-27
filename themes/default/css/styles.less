@@ -1,3 +1,8 @@
+@docsBackground: #FFFFFF;
+@docsTextColor: #000000;
+@navBackground: #202020;
+@navTextColor: #FFFFFF;
+
 /** Reset **/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -53,10 +58,11 @@ body {
 html, body {
 	min-height: 100%;
 	font-family: source-sans-pro, sans-serif;
+	background-color: @docsBackground;
 }
 #navigation {
-	background-color: #202020;
-	color: #FFFFFF;
+	background-color: @navBackground;
+	color: @navTextColor;
 	box-shadow: 0px 0px 25px rgba(0,0,0,0.3);
 	position: fixed;
 	width: 310px;
@@ -104,6 +110,7 @@ article {
 	padding: 10px 50px;
 	font-size: 18px;
 	line-height: 22px;
+	color: @docsTextColor;
 	
 	p, h1, h2, h3, h4, h5, h6, pre {
 		max-width: 50em;
