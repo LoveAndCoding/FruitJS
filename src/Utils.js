@@ -1,6 +1,6 @@
 var fs = require('fs'),
 	util = require('util'),
-	rsvp = require('RSVP'),
+	rsvp = require('rsvp'),
 	path = require('path'),
 	mkdirp = require('mkdirp');
 

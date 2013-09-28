@@ -7,7 +7,7 @@
 var $ = require('./Utils.js'),
 	fs = require('fs'),
 	_ = require('underscore'),
-	rsvp = require('RSVP'),
+	rsvp = require('rsvp'),
 	less = require('less'),
 	Page = require('./Page.js'),
 	DefaultTheme = require('./Theme.js'),

@@ -4,7 +4,7 @@
   *	
   **/
 var $ = require('./Utils.js'),
-	rsvp = require('RSVP'),
+	rsvp = require('rsvp'),
 	_ = require('underscore'),
 	path = require('path'),
 	marked = require('marked');
