@@ -1,0 +1,18 @@
+@media print {
+  article {
+    margin-left: 0px;
+  }
+  article pre {
+    margin-right: 0px;
+    max-width: 60em;
+  }
+  #navigation {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: hidden;
+  }
+  #navigation nav {
+    display: none;
+  }
+}
