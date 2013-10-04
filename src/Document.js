@@ -56,10 +56,7 @@ Doc.prototype.buildMenu = function (tocLevel, singlePage) {
 									TOC.MarkdownToMenu( 
 										pagesMD[index],
 										page.getTitle(),
-										// A page is the index if it is the first entry
-										// so the unintuitive !index actually asks if
-										// this should be the index page... :S
-										singlePage || index == 0 ? 'index.html' : page.getTitle() + '.html',
+										singlePage ? '' : index == 0 ? 'index.html' : page.getTitle() + '.html',
 										self.__tocLevel
 									)
 								);
