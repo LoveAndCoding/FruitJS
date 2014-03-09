@@ -11,7 +11,7 @@ var $ = require('./Utils.js'),
 	less = require('less'),
 	Page = require('./Page.js'),
 	DefaultTheme = require('./Theme.js'),
-	TOC = require('./TOC.js');
+	TOC = require('./Menu.js');
 
 function Doc (Name, Dir) {
 	// init
