@@ -19,7 +19,7 @@ var $ = require('../src/Utils.js'),
 	path = require('path'),
 	FruitJS = require('../fruit.js');
 
-var manifest = argv._[0];
+var manifest = argv._[0] || 'manifest.json';
 
 $.PromiseReader(manifest).then(function (fest) {
 	json = JSON.parse(fest);
