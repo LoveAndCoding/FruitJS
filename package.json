@@ -13,23 +13,21 @@
     "rsvp": "2.x.x",
     "underscore": "1.5.x",
     "less": "1.x.x",
-	"optimist": "0.6.x",
-	"mkdirp": "0.3.5"
+    "optimist": "0.6.x",
+    "mkdirp": "0.3.5",
+    "marked": "~0.3.1"
   },
-  "bundledDependencies": [
-    "marked"
-  ],
   "license": "MIT",
   "engines": {
     "node": ">=0.8"
   },
   "repository": {
     "type": "git",
-    "url" : "https://github.com/ktsashes/FruitJS.git"
+    "url": "https://github.com/ktsashes/FruitJS.git"
   },
-  "homepage":"http://ktsashes.github.io/FruitJS/",
-  "directories":{
-    "doc":"./docs",
-    "lib":"./src"
+  "homepage": "http://ktsashes.github.io/FruitJS/",
+  "directories": {
+    "doc": "./docs",
+    "lib": "./src"
   }
 }
