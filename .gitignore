@@ -16,11 +16,4 @@ npp.workspace
 
 output/*
 
-node_modules/.bin*
-node_modules/less*
-node_modules/optimist*
-node_modules/rsvp*
-node_modules/underscore*
-node_modules/mkdirp*
-node_modules/marked/.git*
-node_modules/marked/test/*
+node_modules/*
