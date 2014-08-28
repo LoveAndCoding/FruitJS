@@ -15,5 +15,6 @@ npm-debug.log
 npp.workspace
 
 output/*
+pages/*
 
 node_modules/*

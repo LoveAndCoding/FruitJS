@@ -40,9 +40,7 @@ $.PromiseReader(manifest).then(function (fest) {
 	for(var p in json.pages)
 		doc.addPage($.GetRelativePath(manifest, json.pages[p]));
 	
-	doc.buildMenu(json.tocLevel || 6, argv.s || json.singlePage).then(function () {
-				return doc.render(argv.s || json.singlePage);
-			})
+	doc.setTOCLevel(json.tocLevel || 6).render(argv.s || json.singlePage)
 		.then(function () {
 				console.log('Files were rendered succussfully and placed in the folder '+path.resolve(argv.o));
 			},

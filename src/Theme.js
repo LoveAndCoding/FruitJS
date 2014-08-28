@@ -7,13 +7,22 @@ var $ = require('./Utils.js'),
 	rsvp = require('rsvp'),
 	_ = require('underscore'),
 	path = require('path'),
-	marked = require('marked');
+	marked = require('marked'),
+	MarkedProcessor = require('./MarkedProcessor.js');
+
+marked.setOptions({
+		gfm: true,
+		tables: true,
+		renderer: MarkedProcessor,
+		headerPrefix: 'h'
+	});
 
 function MarkDocTheme (Doc) {
 	// DEFAULT VALUES
 	this.__header = path.resolve(__dirname, '../themes/default/header.html');
 	this.__nav = path.resolve(__dirname, '../themes/default/nav.html');
 	this.__footer = path.resolve(__dirname, '../themes/default/footer.html');
+	MarkedProcessor.setDoc(Doc);
 	
 	// Add Styles
 	this.addContent(Doc);
@@ -31,10 +40,10 @@ MarkDocTheme.prototype.renderNav = function (opts) {
 };
 MarkDocTheme.prototype.renderContent = function (md) {
 	if(this.__content)
-		return this.__render(this.__content, {'Content':marked.parser(md)});
+		return this.__render(this.__content, {'Content':marked(md)});
 	else
 		return rsvp.Promise(function (res) {
-				res("\t\t<article>\n\t\t\t"+marked.parser(md)+"\n\t\t</article>");
+				res("\t\t<article>\n\t\t\t"+marked(md)+"\n\t\t</article>");
 			});
 };
 MarkDocTheme.prototype.renderFooter = function (opts) {

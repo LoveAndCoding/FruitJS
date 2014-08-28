@@ -19,13 +19,7 @@ function Page (File, Title) {
 	this.__ids = [];
 	
 	var self = this;
-	this.__retrievePromise = rsvp.Promise(function (res, rej) {
-			$.PromiseReader(self.__file).then(function (md) {
-					var luthor = new marked.Lexer();
-					self.__procContent = self.preProcessPage(luthor.lex(md));
-					res(self.__procContent);
-				}, rej);
-		});
+	this.__retrievePromise = $.PromiseReader(self.__file);
 }
 
 Page.prototype.getTitle = function () {

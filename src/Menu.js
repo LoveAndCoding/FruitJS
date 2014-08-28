@@ -61,6 +61,57 @@ TOCEntry.prototype.setURL = function (url) {
 	return this;
 };
 
+/**	TOCBuilder Object
+  *	
+  *	Table of Contents Builder object, containing convenience
+  *	methods for building on the fly.
+  *	
+  **/
+function TOCBuilder () {
+	this.__toc = new TOC();
+	this.__idPrefix = '';
+	this.hardCut();
+}
+TOCBuilder.prototype.addPage = function (title, url, level) {
+	if(level > this.__lvl && this.__lvl != -1) {
+		// This should be a sub menu
+		this.__lvlStk.push(level);
+		var rpl = new TOC();
+		this.__curr.get(-1).addSubMenu(rpl);
+		this.__curr = rpl;
+		this.__tocStack.push(rpl);
+	} else if (level < this.__lvl) {
+		// Go back up until we're at the right spot
+		while(level < this.__lvl && this.__lvlStk.length) {
+			this.__lvl = this.__lvlStk.pop();
+			this.__curr = this.__tocStack.pop();
+		}
+		this.__lvlStk.push(level);
+		this.__tocStack.push(this.__curr);
+	}
+	
+	if(url[0] == '#')
+		url = this.__idPrefix + url;
+	this.__curr.addPage(title, url);
+	this.__lvl = level;
+	return this;
+};
+TOCBuilder.prototype.setIdPage = function (prefix) {
+	// If we're setting just an id, we may want to specify a page
+	this.__idPrefix = prefix;
+	return this;
+};
+TOCBuilder.prototype.hardCut = function () {
+	this.__lvl = -1;
+	this.__lvlStk = [1];
+	this.__curr = this.__toc;
+	this.__tocStack = [this.__toc];
+	return this;
+}
+TOCBuilder.prototype.getTOC = function () {
+	return this.__toc;
+}
+
 /**	Static Functions
   *	
   **/
@@ -133,5 +184,7 @@ TOC.MarkdownToMenu = function (mdObj, title, url, lvls) {
 	
 	return page;
 };
+
+TOC.Builder = TOCBuilder;
 
 module.exports = TOC;
