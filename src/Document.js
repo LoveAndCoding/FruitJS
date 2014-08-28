@@ -60,7 +60,7 @@ Doc.prototype.render = function (singlePage) {
 						return page.getMarkdown()
 							.then(function (md) {
 								if(!singlePage)
-									self.__tocBuilder.setIdPage(page.getTitle() + '.html');
+									self.__tocbuilder.setIdPage(page.getTitle() + '.html');
 								return self.__theme.renderContent(md);
 							}).then(function (html) {
 								pageRenders.push(html);
@@ -72,10 +72,10 @@ Doc.prototype.render = function (singlePage) {
 				this.__pages[p].getMarkdown()
 					.then(function (md) {
 						if(!singlePage)
-							self.__tocBuilder.setIdPage('./');
+							self.__tocbuilder.setIdPage('./');
 						return self.__theme.renderContent(md);
 					}).then(function (html) {
-						self.__tocBuilder.hardCut();
+						self.__tocbuilder.hardCut();
 						pageRenders.push(html);
 					})
 			);
