@@ -1,43 +1,41 @@
 /**	Marked Renderer Overrides
   *	
   **/
-
 var marked = require('marked'),
-	renderer = marked.Renderer.prototype,
-	idRegex = /id="[([^"]+)]"/;
+	renderer = new marked.Renderer(),
+	idRegex = /id="([^"]+)"/;
 
-function MarkedProcessor (Document) {
-	this.doc = Document;
-	
-	this.options.headerPrefix = 'h';
-}
+renderer.setDoc = function (Doc) {
+	this.doc = Doc;
+};
 
-MarkedProcessor.prototype = Object.create(renderer);
-
-MarkedProcessor.heading = function (text, level) {
-	var content = renderer.heading.apply(this, arguments),
+renderer.heading = function (text, level) {
+	var content = marked.Renderer.prototype.heading.apply(this, arguments),
 		id = content.match(idRegex);
 	
 	if(id && id.length >= 2) {
 		id = id[1]; // our matched ID
 		
-		if(this.doc.hasId(id)) {
+		if(renderer.doc.hasId(id)) {
 			// We already used this ID in the document
 			// Make a new unique ID
 			var ucount = 1;
-			while(this.doc.hasId(id + ucount)) {
+			while(renderer.doc.hasId(id + ucount)) {
 				ucount++;
 			}
 			content.replace(id, id + ucount);
 			id = id + ucount;
+		} else {
+			renderer.doc.addId(id);
 		}
 		
-		if(this.doc.options.tocLevel >= level)
-			this.doc.menu.addItem(text, level, id);
+		if(renderer.doc.__tocLevel >= level) {
+			renderer.doc.__tocbuilder.addPage(text, '#'+id, level);
+		}
 		
 	} // else: We created a new heading, but it doesn't have an id?!
 	
 	return content;
-}
+};
 
-module.exports = MarkedProcessor;
+module.exports = renderer;
