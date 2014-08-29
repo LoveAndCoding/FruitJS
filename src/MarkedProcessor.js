@@ -9,6 +9,10 @@ renderer.setDoc = function (Doc) {
 	this.doc = Doc;
 };
 
+renderer.setPage = function (page) {
+	this.page = page;
+};
+
 renderer.heading = function (text, level) {
 	var content = marked.Renderer.prototype.heading.apply(this, arguments),
 		id = content.match(idRegex);
@@ -34,6 +38,12 @@ renderer.heading = function (text, level) {
 		}
 		
 	} // else: We created a new heading, but it doesn't have an id?!
+	
+	if(renderer.page) {
+		if(!renderer.page.getTitle()) {
+			renderer.page.setTitle(text);
+		}
+	}
 	
 	return content;
 };

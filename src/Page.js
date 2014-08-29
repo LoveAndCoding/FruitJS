@@ -6,21 +6,28 @@
 var $ = require('./Utils.js'),
 	rsvp = require('rsvp'),
 	util = require('util'),
-	marked = require('marked');
-
-marked.setOptions({
-		gfm: true,
-		tables: true
-	});
+	path = require('path');
 
 function Page (File, Title) {
 	this.__file = File,
 	this.__title = Title,
 	this.__ids = [];
 	
+	this.setOutputFile();
 	var self = this;
 	this.__retrievePromise = $.PromiseReader(self.__file);
 }
+
+Page.prototype.getOutputFile = function () {
+	return this.__htmlName;
+};
+
+Page.prototype.setOutputFile = function (filename) {
+	if(!filename)
+		filename = path.basename(this.__file).replace(/(\.md|\.markdown)$/, '') + '.html';
+	this.__htmlName = filename;
+	return this;
+};
 
 Page.prototype.getTitle = function () {
 	return this.__title;

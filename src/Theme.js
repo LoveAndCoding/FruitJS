@@ -38,7 +38,9 @@ MarkDocTheme.prototype.renderHeader = function (opts) {
 MarkDocTheme.prototype.renderNav = function (opts) {
 	return this.__render(this.__nav, opts);
 };
-MarkDocTheme.prototype.renderContent = function (md) {
+MarkDocTheme.prototype.renderContent = function (md, page) {
+	MarkedProcessor.setPage(page);
+	
 	if(this.__content)
 		return this.__render(this.__content, {'Content':marked(md)});
 	else
