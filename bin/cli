@@ -24,7 +24,7 @@ var manifest = argv._[0] || 'manifest.json';
 $.PromiseReader(manifest).then(function (fest) {
 	json = JSON.parse(fest);
 	
-	var doc = new FruitJS(json.name || "Docs", path.resolve(argv.o));
+	var doc = new FruitJS(json.name || "Docs", path.resolve(argv.o), manifest);
 	
 	for(var c in json.css)
 		doc.addCSS($.GetRelativePath(manifest, json.css[c]));
@@ -33,9 +33,11 @@ $.PromiseReader(manifest).then(function (fest) {
 		doc.addLESS($.GetRelativePath(manifest, json.less[l]));
 	
 	for(var i in json.images)
-		doc.addImage($.GetRelativePath(manifest, json.images[i]));
-	if(json.imageTitle)
-		doc.addImage($.GetRelativePath(manifest, json.imageTitle)).setImageTitle(path.basename(json.imageTitle));
+		doc.addImage(json.images[i]);
+	if(json.imageTitle) {
+		doc.addImage(json.imageTitle);
+		doc.setImageTitle(path.basename(json.imageTitle));
+	}
 	
 	for(var p in json.pages)
 		doc.addPage($.GetRelativePath(manifest, json.pages[p]));

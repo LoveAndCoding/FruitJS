@@ -38,4 +38,18 @@ renderer.heading = function (text, level) {
 	return content;
 };
 
+renderer.image = function (href, title, text) {
+	// If the link starts with *://, //, or /, we don't want to touch it.
+	// We'll assume URLs like this are not relative to our current folder
+	// location and are intentionally that way. No modifications!
+	if(/^(\w+:\/\/|\/\/|\/)/.test(href)) {
+		return marked.Renderer.prototype.image.apply(this, arguments);
+	}
+	
+	// Else, we've got a URL we might need to tweak and make relative
+	var img = renderer.doc.addImage(href);
+	href = img.getOutputPath();
+	return marked.Renderer.prototype.image.apply(this, arguments);
+};
+
 module.exports = renderer;

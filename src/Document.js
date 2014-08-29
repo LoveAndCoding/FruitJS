@@ -11,9 +11,16 @@ var $ = require('./Utils.js'),
 	less = require('less'),
 	Page = require('./Page.js'),
 	DefaultTheme = require('./Theme.js'),
-	TOC = require('./Menu.js');
+	TOC = require('./Menu.js'),
+	AssetFile = require('./File.js'),
+	
+	// Globals
+	CSSFolder = 'css',
+	JSFolder = 'js',
+	ImageFolder = 'images',
+	AssetsFolder = 'assets';
 
-function Doc (Name, Dir) {
+function Doc (Name, Dir, Origin) {
 	// init
 	
 	// Added content
@@ -23,8 +30,11 @@ function Doc (Name, Dir) {
 	this.__images = [],
 	this.__pages  = [],
 	
+	this.__outputStructure = {},
+	
 	// Defaults
 	this.__outputTo = Dir || 'output',
+	this.__manifest = Origin,
 	this.__tocLevel = 2;
 	
 	this.__name = Name || 'Documentation';
@@ -35,6 +45,10 @@ function Doc (Name, Dir) {
 	
 	this.idMap = {};
 }
+
+Doc.prototype.getAbsolutePathFromRelative = function (filepath) {
+	return $.GetRelativePath(this.__manifest, filepath);
+};
 
 Doc.prototype.setTOCLevel = function (level) {
 	this.__tocLevel = level;
@@ -137,15 +151,11 @@ Doc.prototype.render = function (singlePage) {
 				);
 			this.__js[j] = 'js/' + script;
 		}
+		
 		for (var i in this.__images) {
-			var image = $.GetFileName(this.__images[i]);
 			copyCommands.push(
-				$.PromiseCopy(
-						this.__images[i],
-						this.__outputTo + $.sep + 'images' + $.sep + image
-					)
+					this.__images[i].copyTo( this.__outputTo + $.sep + ImageFolder )
 				);
-			this.__images[i] = 'images/' + image;
 		}
 		
 		// We should only do the header, nav, and footer
@@ -289,8 +299,18 @@ Doc.prototype.addJS = function (file) {
 };
 
 Doc.prototype.addImage = function (file) {
-	this.__images.push(file);
-	return this;
+	file = this.getAbsolutePathFromRelative(file);
+	for(var i in this.__images) {
+		// check if we already have this file
+		if(this.__images[i].matches(file)) {
+			return this.__images[i];
+		}
+	}
+	
+	var obj = new AssetFile(file);
+	this.setUniqueFileName( ImageFolder, obj );
+	this.__images.push( obj );
+	return obj;
 };
 
 Doc.prototype.addPage = function (file, title, isIndex) {
@@ -301,23 +321,46 @@ Doc.prototype.addPage = function (file, title, isIndex) {
 	return this;
 };
 
+Doc.prototype.setUniqueFileName = function ( folder, file ) {
+	if(!this.__outputStructure[folder]) {
+		this.__outputStructure[folder] = [];
+	}
+	var flist = this.__outputStructure[folder],
+		name = file.getName(),
+		basename = name.split('.'),
+		ext = '.' + basename.splice(-1, 1)[0],
+		i = 1;
+	basename.join('.');
+	
+	while( flist.indexOf(name) >= 0 ) {
+		name = basename + i + ext;
+		i++;
+	}
+	
+	flist.push( name );
+	file.setName( name );
+	file.setOutputPath( folder );
+	
+	return file;
+};
+
 Doc.prototype.setImageTitle = function (image) {
 	this.__imageTitle = image;
 	return this;
-}
+};
 
 Doc.prototype.hasId = function (id) {
 	return !!this.idMap[id];
-}
+};
 
 Doc.prototype.addId = function (id) {
 	this.idMap[id] = true;
 	return this;
-}
+};
 
 Doc.prototype.addId = function (id) {
 	delete this.idMap[id];
 	return this;
-}
+};
 
 module.exports = Doc;
