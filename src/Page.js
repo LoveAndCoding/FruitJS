@@ -18,6 +18,10 @@ function Page (File, Title) {
 	this.__retrievePromise = $.PromiseReader(self.__file);
 }
 
+Page.prototype.getFile = function () {
+	return this.__file;
+};
+
 Page.prototype.getOutputFile = function () {
 	return this.__htmlName;
 };

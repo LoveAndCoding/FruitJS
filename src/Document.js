@@ -28,6 +28,7 @@ function Doc (Name, Dir, Origin) {
 	this.__css    = [],
 	this.__js     = [],
 	this.__images = [],
+	this.__assets = [],
 	this.__pages  = [],
 	
 	this.__outputStructure = {},
@@ -169,6 +170,12 @@ Doc.prototype.render = function (singlePage) {
 		for (var i in this.__images) {
 			copyCommands.push(
 					this.__images[i].copyTo( this.__outputTo + $.sep + ImageFolder )
+				);
+		}
+		
+		for (var a in this.__assets) {
+			copyCommands.push(
+					this.__assets[a].copyTo( this.__outputTo + $.sep + AssetsFolder )
 				);
 		}
 		
@@ -327,6 +334,21 @@ Doc.prototype.addImage = function (file) {
 	return obj;
 };
 
+Doc.prototype.addAsset = function (file) {
+	file = this.getAbsolutePathFromRelative(file);
+	for(var i in this.__assets) {
+		// check if we already have this file
+		if(this.__assets[i].matches(file)) {
+			return this.__assets[i];
+		}
+	}
+	
+	var obj = new AssetFile(file);
+	this.setUniqueFileName( AssetsFolder, obj );
+	this.__assets.push( obj );
+	return obj;
+};
+
 Doc.prototype.addPage = function (file, title, isIndex) {
 	if(isIndex) {
 		this.__pages.unshift( new Page(file, title) );
@@ -340,6 +362,13 @@ Doc.prototype.addPage = function (file, title, isIndex) {
 	}
 	
 	return this;
+};
+
+Doc.prototype.getPage = function (file) {
+	for(var p in this.__pages) {
+		if( this.__pages[p].getFile() == file )
+			return this.__pages[p];
+	}
 };
 
 Doc.prototype.setUniqueFileName = function ( folder, file ) {
