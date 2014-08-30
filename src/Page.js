@@ -28,7 +28,7 @@ Page.prototype.getOutputFile = function () {
 
 Page.prototype.setOutputFile = function (filename) {
 	if(!filename)
-		filename = path.basename(this.__file).replace(/(\.md|\.markdown)$/, '') + '.html';
+		filename = path.basename(this.__file).replace(/(\.md|\.markdown|\.mdown|\.mkdn)$/, '') + '.html';
 	this.__htmlName = filename;
 	return this;
 };
