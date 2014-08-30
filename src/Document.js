@@ -11,9 +11,16 @@ var $ = require('./Utils.js'),
 	less = require('less'),
 	Page = require('./Page.js'),
 	DefaultTheme = require('./Theme.js'),
-	TOC = require('./Menu.js');
+	TOC = require('./Menu.js'),
+	AssetFile = require('./File.js'),
+	
+	// Globals
+	CSSFolder = 'css',
+	JSFolder = 'js',
+	ImageFolder = 'images',
+	AssetsFolder = 'assets';
 
-function Doc (Name, Dir) {
+function Doc (Name, Dir, Origin) {
 	// init
 	
 	// Added content
@@ -21,11 +28,16 @@ function Doc (Name, Dir) {
 	this.__css    = [],
 	this.__js     = [],
 	this.__images = [],
+	this.__assets = [],
 	this.__pages  = [],
+	
+	this.__outputStructure = {},
 	
 	// Defaults
 	this.__outputTo = Dir || 'output',
+	this.__manifest = Origin,
 	this.__tocLevel = 2;
+	this.__singlePage = false;
 	
 	this.__name = Name || 'Documentation';
 	
@@ -36,12 +48,28 @@ function Doc (Name, Dir) {
 	this.idMap = {};
 }
 
+Doc.prototype.getAbsolutePathFromRelative = function (filepath) {
+	return $.GetRelativePath(this.__manifest, filepath);
+};
+
 Doc.prototype.setTOCLevel = function (level) {
 	this.__tocLevel = level;
 	return this;
 };
 
+Doc.prototype.setSinglePage = function (singlePage) {
+	this.__singlePage = !!singlePage;
+	return this;
+};
+
+Doc.prototype.isSinglePage = function () {
+	return this.__singlePage;
+};
+
 Doc.prototype.render = function (singlePage) {
+	if(typeof singlePage != 'undefined')
+		this.setSinglePage(singlePage);
+	
 	var self = this,
 		copyCommands = [],
 		otherRenders = [],
@@ -58,11 +86,12 @@ Doc.prototype.render = function (singlePage) {
 			pageRenderPromises.push(
 				pageRenderPromises[pageRenderPromises.length - 1].then((function (page) {
 						return page.getMarkdown()
-							.then(function (md) {
-								if(!singlePage)
-									self.__tocbuilder.setIdPage(page.getTitle() + '.html');
-								return self.__theme.renderContent(md);
-							}).then(function (html) {
+							.then((function (page, md) {
+								if(!self.__singlePage)
+									self.__tocbuilder.setIdPage(page.getOutputFile());
+								return self.__theme.renderContent(md, page);
+							}).bind(self, page)).then(function (html) {
+								self.__tocbuilder.hardCut();
 								pageRenders.push(html);
 							});
 					}).bind(self, this.__pages[p]))
@@ -70,11 +99,11 @@ Doc.prototype.render = function (singlePage) {
 		} else {
 			pageRenderPromises.push(
 				this.__pages[p].getMarkdown()
-					.then(function (md) {
-						if(!singlePage)
+					.then((function (page, md) {
+						if(!self.__singlePage)
 							self.__tocbuilder.setIdPage('./');
-						return self.__theme.renderContent(md);
-					}).then(function (html) {
+						return self.__theme.renderContent(md, page);
+					}).bind(self, this.__pages[p])).then(function (html) {
 						self.__tocbuilder.hardCut();
 						pageRenders.push(html);
 					})
@@ -137,20 +166,22 @@ Doc.prototype.render = function (singlePage) {
 				);
 			this.__js[j] = 'js/' + script;
 		}
+		
 		for (var i in this.__images) {
-			var image = $.GetFileName(this.__images[i]);
 			copyCommands.push(
-				$.PromiseCopy(
-						this.__images[i],
-						this.__outputTo + $.sep + 'images' + $.sep + image
-					)
+					this.__images[i].copyTo( this.__outputTo + $.sep + ImageFolder )
 				);
-			this.__images[i] = 'images/' + image;
+		}
+		
+		for (var a in this.__assets) {
+			copyCommands.push(
+					this.__assets[a].copyTo( this.__outputTo + $.sep + AssetsFolder )
+				);
 		}
 		
 		// We should only do the header, nav, and footer
 		// once if we're making a single page
-		if(singlePage) {
+		if(this.__singlePage) {
 			otherRenders.push(
 				this.__theme.renderHeader({
 						Title       : this.__name,
@@ -183,7 +214,7 @@ Doc.prototype.render = function (singlePage) {
 			// This will hold all of our individual promises
 			var pagePromises = [];
 			
-			if(!singlePage) {
+			if(!this.__singlePage) {
 				// First, render the header
 				pagePromises.push(
 					this.__theme.renderHeader({
@@ -203,7 +234,7 @@ Doc.prototype.render = function (singlePage) {
 				);
 			}
 			
-			if(!singlePage) {
+			if(!this.__singlePage) {
 				// And finally, the footer content
 				pagePromises.push(
 					this.__theme.renderFooter({
@@ -221,7 +252,7 @@ Doc.prototype.render = function (singlePage) {
 						// Let's also wrap up all the pieces
 						// into one so that no one else needs
 						// to know these weird structure
-						pieces.splice(singlePage ? 0 : 2, 0, pageRenders[p]);
+						pieces.splice(this.__singlePage ? 0 : 2, 0, pageRenders[p]);
 						return rsvp.Promise(
 								function (r) {
 									r(pieces.length > 1 ? pieces.join('') : pieces[0]);
@@ -231,7 +262,7 @@ Doc.prototype.render = function (singlePage) {
 			);
 		}
 		
-		if(singlePage) {
+		if(this.__singlePage) {
 			var writeOut = rsvp.all(otherRenders).then(
 					function (pieces) {
 						return rsvp.all(pageCompiles).then(
@@ -255,7 +286,7 @@ Doc.prototype.render = function (singlePage) {
 							// As in other places in the code, 0 is used
 							// for the index page, all other pages will
 							// use their title as the file name
-							var filename = p == 0 ? 'index.html' : self.__pages[p].getTitle() + '.html';
+							var filename = self.__pages[p].getOutputFile();
 							
 							// Write out to the file
 							allWrite.push(
@@ -289,35 +320,97 @@ Doc.prototype.addJS = function (file) {
 };
 
 Doc.prototype.addImage = function (file) {
-	this.__images.push(file);
-	return this;
+	file = this.getAbsolutePathFromRelative(file);
+	for(var i in this.__images) {
+		// check if we already have this file
+		if(this.__images[i].matches(file)) {
+			return this.__images[i];
+		}
+	}
+	
+	var obj = new AssetFile(file);
+	this.setUniqueFileName( ImageFolder, obj );
+	this.__images.push( obj );
+	return obj;
+};
+
+Doc.prototype.addAsset = function (file) {
+	file = this.getAbsolutePathFromRelative(file);
+	for(var i in this.__assets) {
+		// check if we already have this file
+		if(this.__assets[i].matches(file)) {
+			return this.__assets[i];
+		}
+	}
+	
+	var obj = new AssetFile(file);
+	this.setUniqueFileName( AssetsFolder, obj );
+	this.__assets.push( obj );
+	return obj;
 };
 
 Doc.prototype.addPage = function (file, title, isIndex) {
-	if(isIndex)
+	if(isIndex) {
 		this.__pages.unshift( new Page(file, title) );
-	else
+		this.__pages[0].setOutputFile('index.html');
+		if(this.__pages[1])
+			this.__pages[1].setOutputFile();
+	} else {
 		this.__pages.push( new Page(file, title) );
+		if(this.__pages.length == 1)
+			this.__pages[0].setOutputFile('index.html');
+	}
+	
 	return this;
+};
+
+Doc.prototype.getPage = function (file) {
+	for(var p in this.__pages) {
+		if( this.__pages[p].getFile() == file )
+			return this.__pages[p];
+	}
+};
+
+Doc.prototype.setUniqueFileName = function ( folder, file ) {
+	if(!this.__outputStructure[folder]) {
+		this.__outputStructure[folder] = [];
+	}
+	var flist = this.__outputStructure[folder],
+		name = file.getName(),
+		basename = name.split('.'),
+		ext = '.' + basename.splice(-1, 1)[0],
+		i = 1;
+	basename.join('.');
+	
+	while( flist.indexOf(name) >= 0 ) {
+		name = basename + i + ext;
+		i++;
+	}
+	
+	flist.push( name );
+	file.setName( name );
+	file.setOutputPath( folder );
+	
+	return file;
 };
 
 Doc.prototype.setImageTitle = function (image) {
 	this.__imageTitle = image;
 	return this;
-}
+};
 
 Doc.prototype.hasId = function (id) {
 	return !!this.idMap[id];
-}
+};
 
 Doc.prototype.addId = function (id) {
 	this.idMap[id] = true;
 	return this;
-}
+};
 
 Doc.prototype.addId = function (id) {
 	delete this.idMap[id];
 	return this;
-}
+};
 
 module.exports = Doc;

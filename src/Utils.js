@@ -35,7 +35,7 @@ function PromiseWriter ( file, content, encoding ) {
 	return promise;
 }
 
-function PromiseCopy (original, copyLocation ) {
+function PromiseCopy ( original, copyLocation ) {
 	return rsvp.Promise(function (res, rej) {
 			PromiseReader(original, {encoding:null}).then(
 					function (contents) {
@@ -46,14 +46,14 @@ function PromiseCopy (original, copyLocation ) {
 		});
 }
 
-function GetFileName (location) {
+function GetFileName ( location ) {
 	if (!location)
 		return;
 	
 	return path.basename(location);
 }
 
-function GetRelativePath(origin, file) {
+function GetRelativePath( origin, file ) {
 	return path.resolve(path.dirname(origin)+path.sep+file);
 }
 
