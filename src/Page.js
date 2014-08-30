@@ -50,27 +50,4 @@ Page.prototype.getMarkdown = function () {
 	return this.__retrievePromise;
 };
 
-function findUniqueID (existing, id) {
-	if(!existing || !util.isArray(existing) || !existing[id])
-		return id;
-	
-	var add = 1;
-	while ( existing[id + '-' + add] )
-		add++;
-	return id + '-' + add;
-}
-
-Page.prototype.preProcessPage = function (md) {
-	
-	if(!this.getTitle()) {
-		// Go until we find a heading
-		for(var m = 0, l = md.length; m < l && !this.getTitle(); m++) {
-			if(md[m] && md[m].type == 'heading' && md[m].depth == 1 && md[m].text)
-				this.setTitle(md[m].text);
-		}
-	}
-	
-	return md;
-};
-
 module.exports = Page;
