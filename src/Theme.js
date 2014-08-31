@@ -45,7 +45,8 @@ MarkDocTheme.prototype.renderContent = function (md, page) {
 		return this.__render(this.__content, {'Content':marked(md)});
 	else
 		return rsvp.Promise(function (res) {
-				res("\t\t<article>\n\t\t\t"+marked(md)+"\n\t\t</article>");
+				var html = marked(md);
+				res("\t\t<article id=\"page-"+page.getID()+"\">\n\t\t\t"+html+"\n\t\t</article>");
 			});
 };
 MarkDocTheme.prototype.renderFooter = function (opts) {
