@@ -29,11 +29,10 @@ renderer.heading = function (text, level) {
 			while(renderer.doc.hasId(id + ucount)) {
 				ucount++;
 			}
-			content.replace(id, id + ucount);
+			content = content.replace(id, id + ucount);
 			id = id + ucount;
-		} else {
-			renderer.doc.addId(id);
 		}
+		renderer.doc.addId(id);
 		
 		if(renderer.doc.__tocLevel >= level) {
 			renderer.doc.__tocbuilder.addPage(text, '#'+id, level);
