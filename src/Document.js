@@ -408,9 +408,4 @@ Doc.prototype.addId = function (id) {
 	return this;
 };
 
-Doc.prototype.addId = function (id) {
-	delete this.idMap[id];
-	return this;
-};
-
 module.exports = Doc;
