@@ -60,10 +60,18 @@ renderer.link = function (href, title, text) {
 			var page = renderer.doc.getPage(pfile);
 			if(page) {
 				// A cross page link. Replace
-				var pagename = page.getOutputFile();
-				if(pagename == 'index.html')
-					pagename = './';
-				href = href.replace(encodeURI(filename), pagename);
+				if(renderer.doc.isSinglePage()) {
+					if(href.indexOf('#') < 0) {
+						// We're not linking to a specific ID, so link to the section
+						var pagename = '#page-' + page.getID();
+					}
+				} else {
+					var pagename = page.getOutputFile();
+					if(pagename == 'index.html')
+						pagename = './';
+					pagename = href.replace(encodeURI(filename), pagename);
+				}
+				href = pagename;
 			} else {
 				// A non page link
 				var asset = renderer.doc.addAsset(filename);

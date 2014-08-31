@@ -42,6 +42,10 @@ Page.prototype.setTitle = function (title) {
 	return this;
 };
 
+Page.prototype.getID = function () {
+	return this.__htmlName.toLowerCase().replace(/\.html$/, '').replace(/[^\w]+/g,'-');
+};
+
 Page.prototype.getIDs = function () {
 	return this.__ids;
 };
