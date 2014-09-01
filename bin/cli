@@ -17,32 +17,47 @@ var $ = require('../src/Utils.js'),
 			})
 			.argv,
 	path = require('path'),
+	fs = require('fs'),
 	FruitJS = require('../fruit.js');
 
 var manifest = argv._[0] || 'manifest.json';
 
 $.PromiseReader(manifest).then(function (fest) {
-	json = JSON.parse(fest);
+	var options = JSON.parse(fest),
+		doc = new FruitJS(options.name || "Docs", path.resolve(argv.o), manifest),
+		addTreeFn = function (arr, fn) {
+				for(var a in arr) {
+					addItemFn(arr[a], fn);
+				}
+			},
+		addItemFn = function (itm, fn) {
+				if(!fs.existsSync(itm)) {
+					console.error('File not found.', itm);
+					process.exit();
+				} else if(fs.statSync(itm).isDirectory()) {
+					var sub = fs.readdirSync(itm);
+					for(var s in sub)
+						sub[s] = itm + path.sep + sub[s];
+					addTreeFn(sub,fn);
+				} else {
+					fn(itm);
+				}
+			};
 	
-	var doc = new FruitJS(json.name || "Docs", path.resolve(argv.o), manifest);
+	addTreeFn(options.css, doc.addCSS.bind(doc));
+	addTreeFn(options.less, doc.addLESS.bind(doc));
+	addTreeFn(options.images, doc.addImage.bind(doc));
+	addTreeFn(options.assets, doc.addAsset.bind(doc));
 	
-	for(var c in json.css)
-		doc.addCSS($.GetRelativePath(manifest, json.css[c]));
-	
-	for(var l in json.less)
-		doc.addLESS($.GetRelativePath(manifest, json.less[l]));
-	
-	for(var i in json.images)
-		doc.addImage(json.images[i]);
-	if(json.imageTitle) {
-		doc.addImage(json.imageTitle);
-		doc.setImageTitle(path.basename(json.imageTitle));
+	if(options.imageTitle) {
+		doc.addImage(options.imageTitle);
+		doc.setImageTitle(path.basename(options.imageTitle));
 	}
 	
-	for(var p in json.pages)
-		doc.addPage($.GetRelativePath(manifest, json.pages[p]));
+	for(var p in options.pages)
+		doc.addPage($.GetRelativePath(manifest, options.pages[p]));
 	
-	doc.setTOCLevel(json.tocLevel || 6).render(argv.s || json.singlePage)
+	doc.setTOCLevel(options.tocLevel || 6).render(argv.s || options.singlePage)
 		.then(function () {
 				console.log('Files were rendered succussfully and placed in the folder '+path.resolve(argv.o));
 			},
