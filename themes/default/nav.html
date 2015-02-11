@@ -28,6 +28,6 @@
 %>
 		<section id="navigation">
 			<h1><a href="./"><% if(Logo != "") {%><img src="images/<%= Logo %>" alt="<%= Title %>"><% } else {%><%= Title %><% } %></a></h1>
-			<nav><%= _.reduce(_.map(Menu, function (i) { return navStr(i, 5); }), printNav) %>
+			<nav><ul><%= _.reduce(_.map(Menu, function (i) { return navStr(i, 5); }), printNav) %></ul>
 			</nav>
 		</section>
