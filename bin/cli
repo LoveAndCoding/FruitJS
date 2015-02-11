@@ -13,6 +13,11 @@ var $ = require('../src/Utils.js'),
 						'alias':'singlePage',
 						'boolean':true,
 						'description':'Flag indicating that all markdown should be exported to a single page'
+					},
+				'x':{
+						'alias':'disableExtraction',
+						'boolean':true,
+						'description':'Disables the automatic extraction of images and assets from internal links in the documents'
 					}
 			})
 			.argv,
@@ -52,6 +57,10 @@ $.PromiseReader(manifest).then(function (fest) {
 	if(options.imageTitle) {
 		doc.addImage(options.imageTitle);
 		doc.setImageTitle(path.basename(options.imageTitle));
+	}
+	
+	if(argv.x) {
+		doc.disableExtraction();
 	}
 	
 	for(var p in options.pages)

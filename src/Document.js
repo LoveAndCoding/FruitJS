@@ -38,6 +38,7 @@ function Doc (Name, Dir, Origin) {
 	this.__manifest = Origin,
 	this.__tocLevel = 2;
 	this.__singlePage = false;
+	this.__extract = true;
 	
 	this.__name = Name || 'Documentation';
 	
@@ -406,6 +407,20 @@ Doc.prototype.hasId = function (id) {
 Doc.prototype.addId = function (id) {
 	this.idMap[id] = true;
 	return this;
+};
+
+Doc.prototype.enableExtraction = function () {
+	this.__extract = true;
+	return this;
+};
+
+Doc.prototype.disableExtraction = function () {
+	this.__extract = false;
+	return this;
+};
+
+Doc.prototype.extractionEnabled = function () {
+	return this.__extract;
 };
 
 module.exports = Doc;
