@@ -90,7 +90,7 @@ $.PromiseReader(manifest).then(function (fest) {
 				console.log('Files were rendered succussfully and placed in the folder '+path.resolve(argv.o));
 			},
 			function (err) {
-				console.error(err);
+				console.error(err && err.stack ? err.stack : err);
 			});
 	
 }, function (err) {
