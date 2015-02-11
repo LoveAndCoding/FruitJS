@@ -90,10 +90,26 @@ TOCBuilder.prototype.addPage = function (title, url, level) {
 		this.__tocStack.push(this.__curr);
 	}
 	
-	if(url[0] == '#')
+	if(url && url[0] == '#')
 		url = this.__idPrefix + url;
 	this.__curr.addPage(title, url);
 	this.__lvl = level;
+	return this;
+};
+TOCBuilder.prototype.addMenu = function (menuObj) {
+	this.hardCut();
+	var currentItem = menuObj,
+		$t = this,
+		menuProcessing = function (item, level) {
+			level = level || 1;
+			if(level > 100) return; // Safety
+			$t.addPage(item.Name, item.URL, level);
+			if(item.SubMenu) {
+				for(var s in item.SubMenu)
+					menuProcessing(item.SubMenu[s], level + 1);
+			}
+		};
+	menuProcessing(menuObj);
 	return this;
 };
 TOCBuilder.prototype.setIdPage = function (prefix) {

@@ -44,7 +44,9 @@ function Doc (Name, Dir, Origin) {
 	
 	this.__theme = new DefaultTheme(this),
 	this.__tocbuilder = new TOC.Builder(),
-	this.__toc = this.__tocbuilder.getTOC();
+	this.__toc = this.__tocbuilder.getTOC(),
+	this.__pretoc = [],
+	this.__posttoc = [];
 	
 	this.idMap = {};
 }
@@ -56,6 +58,18 @@ Doc.prototype.getAbsolutePathFromRelative = function (filepath) {
 Doc.prototype.setTOCLevel = function (level) {
 	this.__tocLevel = level;
 	return this;
+};
+
+Doc.prototype.addBeforeMenu = function (obj) {
+	if(obj)
+		this.__pretoc.push(obj);
+	return this
+};
+
+Doc.prototype.addAfterMenu = function (obj) {
+	if(obj)
+		this.__posttoc.push(obj);
+	return this
 };
 
 Doc.prototype.setSinglePage = function (singlePage) {
@@ -77,6 +91,11 @@ Doc.prototype.render = function (singlePage) {
 		pageRenders = [],
 		pageRenderPromises = [],
 		pageCompiles = [];
+	
+	// We need to insert all content in the menu that should go first
+	for(var b in this.__pretoc) {
+		this.__tocbuilder.addMenu(this.__pretoc[b]);
+	}
 	
 	// We need to render all the pages first, so it can extract links
 	// and assets, and build the TOC
@@ -112,7 +131,12 @@ Doc.prototype.render = function (singlePage) {
 		}
 	}
 	
-	return rsvp.all(pageRenderPromises).then((function () {
+	return rsvp.all(pageRenderPromises).then(function () {
+		// We've processed the pages, now insert the post menu items
+		for(var a in self.__posttoc) {
+			self.__tocbuilder.addMenu(self.__posttoc[a]);
+		}
+	}).then((function () {
 		// Copy over all of the necessary assets
 		for (var c in this.__css) {
 			var sheet = $.GetFileName(this.__css[c]);

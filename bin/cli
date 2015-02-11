@@ -63,6 +63,25 @@ $.PromiseReader(manifest).then(function (fest) {
 		doc.disableExtraction();
 	}
 	
+	if(options.preMenu) {
+		if(options.preMenu instanceof Array) {
+			for(var p in options.preMenu) {
+				doc.addBeforeMenu(options.preMenu[p]);
+			}
+		} else {
+			doc.addBeforeMenu(options.preMenu);
+		}
+	}
+	if(options.postMenu) {
+		if(options.postMenu instanceof Array) {
+			for(var p in options.postMenu) {
+				doc.addAfterMenu(options.postMenu[p]);
+			}
+		} else {
+			doc.addAfterMenu(options.postMenu);
+		}
+	}
+	
 	for(var p in options.pages)
 		doc.addPage($.GetRelativePath(manifest, options.pages[p]));
 	
