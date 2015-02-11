@@ -1,0 +1,25 @@
+{
+	"pages":["../common/sample.md"],
+	"name":"Test.Menu.Pre.Object.Sub",
+	"preMenu": {
+			"Name":"Has Sub Items",
+			"SubMenu": [
+				{
+					"Name":"Sub Item 1"
+				},
+				{
+					"Name":"Sub Item 2",
+					"URL":"http://ktsashes.github.io/FruitJS/"
+				},
+				{
+					"Name":"Sub Item 3",
+					"URL":"https://www.npmjs.com/package/fruitjs",
+					"SubMenu": [
+						{
+							"Name": "Sub Sub Item"
+						}
+					]
+				}
+			]
+		}
+}

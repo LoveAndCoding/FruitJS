@@ -1,0 +1,13 @@
+{
+	"pages":["../common/sample.md"],
+	"name":"Test.Menu.Post.Array",
+	"postMenu": [
+			{
+				"Name":"Link to Example",
+				"URL":"http://example.com"
+			},
+			{
+				"Name":"No Link"
+			}
+		]
+}

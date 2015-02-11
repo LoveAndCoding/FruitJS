@@ -1,0 +1,8 @@
+{
+	"pages":["../common/sample.md"],
+	"name":"Test.Menu.Pre.Object",
+	"preMenu": {
+			"Name":"Link to Example",
+			"URL":"http://example.com"
+		}
+}
