@@ -1,4 +1,4 @@
 {
-	"name" : "Resource Gathering Tests",
+	"name" : "Test.Resources.Automatic.Gathering",
 	"pages" : ["images.md", "links.md"]
 }
