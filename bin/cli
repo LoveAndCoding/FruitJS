@@ -51,6 +51,7 @@ $.PromiseReader(manifest).then(function (fest) {
 	
 	addTreeFn(options.css, doc.addCSS.bind(doc));
 	addTreeFn(options.less, doc.addLESS.bind(doc));
+	addTreeFn(options.js, doc.addJS.bind(doc));
 	addTreeFn(options.images, doc.addImage.bind(doc));
 	addTreeFn(options.assets, doc.addAsset.bind(doc));
 	
