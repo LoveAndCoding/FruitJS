@@ -1,0 +1,9 @@
+{
+	"name" : "Test.Resources.Folder.Gathering",
+	"pages" : ["../common/sample.md"],
+	"css" : ["css/"],
+	"js" : ["js/"],
+	"less" : ["less/"],
+	"images" : ["images/"],
+	"assets" : ["sub folder/"]
+}
