@@ -1,0 +1,5 @@
+{
+	"pages": ["crosspage-1.md", "crosspage-2.md"],
+	"name": "Test.Links.Crosspage.Multipage",
+	"singlePage": true
+}
