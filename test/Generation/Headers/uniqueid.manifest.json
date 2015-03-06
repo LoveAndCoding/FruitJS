@@ -1,0 +1,5 @@
+{
+	"pages": ["page1.md", "page2.md"],
+	"name": "Tests.Generation.Headers.UniqueID",
+	"singlePage": true
+}
