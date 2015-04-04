@@ -2,7 +2,7 @@
 	"css":[],
 	"less":[],
 	"images":[],
-	"pages":["intro.md", "commandline.md", "document.md"],
+	"pages":["intro.md", "commandline.md", "manifest.md", "codeapi.md"],
 	"imageTitle":"../images/FruitJSLogo.png",
 	"name":"FruitJS Docs",
 	"tocLevel": 2,

@@ -1,15 +1,19 @@
 # Code API
 
-## Constructor
+## `FruitJS` Constructor
+
+	new FruitJS ( Title[, OutputDir[, RelativeLocation]] )
 
 Creates a new `FruitJS` object. This object is the primary object for creating and 
 rendering documentation sites.
 
 ### Parameters
 
-Required | Type | Description
---- | --- | ---
-Yes | `String` | The title of the documentation. This will be used as the title in the browser window and on the page.
+Name | Required | Type | Description
+--- | --- | --- | ---
+Title | Yes | `String` | The title of the documentation. This will be used as the title in the browser window and on the page.
+OutputDir | No | `String` | Directory to output to. Relative to current running directory. Default is `output`
+RelativeLocation | No | `String` | Relative location from which to pull files. Default is current working directory
 
 ### Returns
 
@@ -20,25 +24,39 @@ New `FruitJS` object
 	var FruitJS = require('FruitJS');
 	var docs = new FruitJS("My Documentation Site")
 
+## `addAsset`
+
+	.addAsset( FilePath )
+
+Adds a file to the output. This file will be copied over to an asset folder in the output
+directory.
+
+### Parameters
+
+Name | Required | Type | Description
+--- | --- | --- | ---
+FilePath | Yes | `String` | The path to the file, relative to `RelativeLocation`
+
+### Returns
+
+Returns `FruitJS` object after adding script to allow chainability.
+
+### Examples
+
+	docs.addCSS('myStyles.css');
+
 ## `addCSS`
+
+	.addCSS( FilePath )
 
 Adds a CSS file to the output. This file will be copied over to a css folder in the output
 directory and will be included on every page.
 
 ### Parameters
 
-<table>
-	<tr>
-		<th>Required</th>
-		<th>Type</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td>Yes</td>
-		<td><code>String</code></td>
-		<td>The path to the file, relative to where the script is being run</td>
-	</tr>
-</table>
+Name | Required | Type | Description
+--- | --- | --- | ---
+FilePath | Yes | `String` | The path to the file, relative to `RelativeLocation`
 
 ### Returns
 
@@ -50,24 +68,17 @@ Returns `FruitJS` object after adding script to allow chainability.
 
 ## `addImage`
 
+	.addImage( FilePath )
+
 Adds an image file to the output. This file will be copied over to a images folder in 
 the output directory. To use this image in your script, simply use it the same as you
 would in standard markup, but refer to the image in the images directory.
 
 ### Parameters
 
-<table>
-	<tr>
-		<th>Required</th>
-		<th>Type</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td>Yes</td>
-		<td><code>String</code></td>
-		<td>The path to the file, relative to where the script is being run</td>
-	</tr>
-</table>
+Name | Required | Type | Description
+--- | --- | --- | ---
+FilePath | Yes | `String` | The path to the file, relative to `RelativeLocation`
 
 ### Returns
 
@@ -83,23 +94,16 @@ In Markdown, you can place this image now using
 
 ## `addJS`
 
+	.addJS( FilePath )
+
 Adds a JS file to the output. This file will be copied over to a js folder in the output
 directory and will be included on every page.
 
 ### Parameters
 
-<table>
-	<tr>
-		<th>Required</th>
-		<th>Type</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td>Yes</td>
-		<td><code>String</code></td>
-		<td>The path to the file, relative to where the script is being run</td>
-	</tr>
-</table>
+Name | Required | Type | Description
+--- | --- | --- | ---
+FilePath | Yes | `String` | The path to the file, relative to `RelativeLocation`
 
 ### Returns
 
@@ -111,6 +115,8 @@ Returns `FruitJS` object after adding script to allow chainability.
 
 ## `addLESS`
 
+	.addLESS( FilePath )
+
 Compiles a LESS file and adds it to the list of CSS for each page to use. This file
 will be copied over to a css folder in the output directory. **Note: The name for
 this file will have the same name as the LESS file, except it will change the
@@ -119,18 +125,9 @@ a LESS file and CSS file that have the same name.**
 
 ### Parameters
 
-<table>
-	<tr>
-		<th>Required</th>
-		<th>Type</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td>Yes</td>
-		<td><code>String</code></td>
-		<td>The path to the file, relative to where the script is being run</td>
-	</tr>
-</table>
+Name | Required | Type | Description
+--- | --- | --- | ---
+FilePath | Yes | `String` | The path to the file, relative to `RelativeLocation`
 
 ### Returns
 
@@ -142,6 +139,8 @@ Returns `FruitJS` object after adding script to allow chainability.
 
 ## `addPage`
 
+	.addPage( FilePath, Title[, IsHomepage] )
+
 Adds a markdown page. This page will be added to automatic page menu building, and
 headings in this file will be parsed into submenu entries. The optional last
 parameter is used for marking a page as the homepage. If more than 1 page is marked
@@ -151,28 +150,11 @@ that the pages are added in.
 
 ### Parameters
 
-<table>
-	<tr>
-		<th>Required</th>
-		<th>Type</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td>Yes</td>
-		<td><code>String</code></td>
-		<td>The path to the file, relative to where the script is being run</td>
-	</tr>
-	<tr>
-		<td>Yes</td>
-		<td><code>String</code></td>
-		<td>The title of the page. This will be used when building the menu, and in the window title</td>
-	</tr>
-	<tr>
-		<td>No</td>
-		<td><code>Boolean</code></td>
-		<td><code>TRUE</code> if this page should be used as the homepage, <code>FALSE</code> otherwise. *Defaults to FALSE*</td>
-	</tr>
-</table>
+Name | Required | Type | Description
+--- | --- | --- | ---
+FilePath | Yes | `String` | The path to the file, relative to `RelativeLocation`
+Title | Yes | `String` | The title of the page. This will be used when building the menu, and in the window title
+IsHomepage | No | `Boolean` | `TRUE` if this page should be used as the homepage. Defaults to `FALSE`
 
 ### Returns
 

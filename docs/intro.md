@@ -4,9 +4,7 @@ Welcome to the FruitJS Documentation. This is your resource for learning how
 to use FruitJS, as well as your guide when you forget. And, of course, this
 documentation is created with FruitJS.
 
-## What is FruitJS?
-
-FruitJS (pronounced Fruit Juice) is a documentation generator built in Node.
+FruitJS (pronounced Fruit Juice) is a documentation generator built in NodeJS.
 It is meant to be a simple way to write your documentation in Markdown, and
 have it converted to a nice site easily. Markdown has a lot of niceties in
 terms of displaying code snippets, and quick edits, but isn't easy for 
@@ -15,14 +13,22 @@ nice API or documentation site is key, and that's where FruitJS comes in.
 Simply create your pages in Markdown, tell FruitJS how to find it, and sit
 back as your documentation becomes oh so sweet.
 
-## How can I use FruitJS?
+## Features
 
-I'm glad you're so anxious to dive in. Or at least, I'm glad I could lead you
-to that. Getting started is pretty simple. Just use `npm` to install FruitJS,
-and run it from the command line. You also can require it in a JS file if
-you'd like to generate things on your own in JS.
+ - Renders all your markdown straight to HTML
+ - Generates menu based on headers in markdown files
+ - Automatically converts links between markdown pages
+ - Grabs images and local files referenced and adds them to the export
+ - Customizable with your own CSS, JS, and LESS files
+ - Can render to a single HTML file, or split the rendering up
 
-	npm install FruitJS
+## Usage
+
+You can use `npm` to install FruitJS, and run it from the command line.
+You also can require it in a JS file if you'd like to generate things
+on your own in JS.
+
+	npm install fruitjs -g
 
 From the command line, you can then do the following:
 
@@ -45,12 +51,11 @@ Or, if you prefer a script file, something like the following would work best:
 Then you're site is all ready to go. By default we output your site to a folder
 called output (wild, I know) right in that same folder it was run in.
 
-## But what about *X*?
+## Contributing
 
-That's a great question. I have a lot of plans to include many features I feel
-people will find helpful. I've got plans for extra navigation categories, themes, 
-and a few other things. I've got big plans for what I hope this to be, and I 
-hope to create them as quickly as I can. That said, this is just the beginning. 
-This is the ground floor we're building on here. So there is still a lot of room 
-to grow. If you'd like to suggest features you'd love to see, let me know on the 
-GitHub issue tracker. Or, feel free to fork and go to town on your own.
+FruitJS is available under the MIT license for anyone to use as they please. If
+you'd like to help out, feel free to [fork us][1], and check out our [issues][2]
+for current tasks and planned features.
+
+ [1]: https://github.com/ktsashes/FruitJS
+ [2]: https://github.com/ktsashes/FruitJS/issues
