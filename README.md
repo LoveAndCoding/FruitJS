@@ -1,5 +1,7 @@
 #FruitJS
 
+[![Build Status](https://travis-ci.org/ktsashes/FruitJS.svg)](https://travis-ci.org/ktsashes/FruitJS)
+
 [Take a look at our documentation][1]
 
 FruitJS (pronounced Fruit Juice) is a simple yet powerful converter to turn markdown
