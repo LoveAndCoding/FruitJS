@@ -88,7 +88,7 @@ $.PromiseReader(manifest).then(function (fest) {
 	
 	doc.setTOCLevel(options.tocLevel || 6).render(argv.s || options.singlePage)
 		.then(function () {
-				console.log('Files were rendered succussfully and placed in the folder '+path.resolve(argv.o));
+				console.log('Files were rendered successfully and placed in the folder '+path.resolve(argv.o));
 			},
 			function (err) {
 				console.error(err && err.stack ? err.stack : err);
