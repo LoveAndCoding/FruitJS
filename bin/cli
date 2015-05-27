@@ -29,7 +29,7 @@ var manifest = argv._[0] || 'manifest.json';
 
 $.PromiseReader(manifest).then(function (fest) {
 	var options = JSON.parse(fest),
-		doc = new FruitJS(options.name || "Docs", path.resolve(argv.o), manifest),
+		doc = new FruitJS(options.name || "Documentation", path.resolve(argv.o), manifest),
 		addTreeFn = function (arr, fn) {
 				for(var a in arr) {
 					addItemFn(arr[a], fn);
