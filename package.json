@@ -17,6 +17,13 @@
     "mkdirp": "0.3.5",
     "marked": "~0.3.1"
   },
+  "scripts": {
+    "test": "vows ./test/run.js --spec"
+  },
+  "devDependencies": {
+    "fs-extra": "~0.18.x",
+    "vows": "~0.8.x"
+  },
   "license": "MIT",
   "engines": {
     "node": ">=0.8"
