@@ -20,7 +20,7 @@ var $ = require('./Utils.js'),
 	ImageFolder = 'images',
 	AssetsFolder = 'assets';
 
-function Doc (Name, Dir, Origin) {
+function Doc (Name, Origin) {
 	// init
 	
 	// Added content
@@ -34,8 +34,7 @@ function Doc (Name, Dir, Origin) {
 	this.__outputStructure = {},
 	
 	// Defaults
-	this.__outputTo = Dir || 'output',
-	this.__manifest = Origin,
+	this.__manifest = Origin || '.',
 	this.__tocLevel = 2;
 	this.__singlePage = false;
 	this.__extract = true;
@@ -81,7 +80,7 @@ Doc.prototype.isSinglePage = function () {
 	return this.__singlePage;
 };
 
-Doc.prototype.render = function (singlePage) {
+Doc.prototype.render = function (outputFolder, singlePage) {
 	if(typeof singlePage != 'undefined')
 		this.setSinglePage(singlePage);
 	
@@ -143,7 +142,7 @@ Doc.prototype.render = function (singlePage) {
 			copyCommands.push(
 				$.PromiseCopy(
 						this.__css[c],
-						this.__outputTo + $.sep + 'css' + $.sep + sheet
+						outputFolder + $.sep + 'css' + $.sep + sheet
 					)
 				);
 			this.__css[c] = 'css/' + sheet;
@@ -163,7 +162,7 @@ Doc.prototype.render = function (singlePage) {
 												lessRej(e);
 											// Write the CSS to disk in the new location
 											$.PromiseWriter(
-													self.__outputTo +
+													outputFolder +
 														$.sep + 'css' +
 														$.sep + $.GetFileName(lessFile).replace(/\.[a-z]+$/,'') + '.css',
 													css
@@ -186,7 +185,7 @@ Doc.prototype.render = function (singlePage) {
 			copyCommands.push(
 				$.PromiseCopy(
 						this.__js[j],
-						this.__outputTo + $.sep + 'js' + $.sep + script
+						outputFolder + $.sep + 'js' + $.sep + script
 					)
 				);
 			this.__js[j] = 'js/' + script;
@@ -194,13 +193,13 @@ Doc.prototype.render = function (singlePage) {
 		
 		for (var i in this.__images) {
 			copyCommands.push(
-					this.__images[i].copyTo( this.__outputTo + $.sep + ImageFolder )
+					this.__images[i].copyTo( outputFolder + $.sep + ImageFolder )
 				);
 		}
 		
 		for (var a in this.__assets) {
 			copyCommands.push(
-					this.__assets[a].copyTo( this.__outputTo + $.sep + AssetsFolder )
+					this.__assets[a].copyTo( outputFolder + $.sep + AssetsFolder )
 				);
 		}
 		

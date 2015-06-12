@@ -28,65 +28,18 @@ var $ = require('../src/Utils.js'),
 var manifest = argv._[0] || 'manifest.json';
 
 $.PromiseReader(manifest).then(function (fest) {
-	var options = JSON.parse(fest),
-		doc = new FruitJS(options.name || "Documentation", path.resolve(argv.o), manifest),
-		addTreeFn = function (arr, fn) {
-				for(var a in arr) {
-					addItemFn(arr[a], fn);
-				}
-			},
-		addItemFn = function (itm, fn) {
-				if(!fs.existsSync(itm)) {
-					console.error('File not found.', itm);
-					process.exit();
-				} else if(fs.statSync(itm).isDirectory()) {
-					var sub = fs.readdirSync(itm);
-					for(var s in sub)
-						sub[s] = itm + path.sep + sub[s];
-					addTreeFn(sub,fn);
-				} else {
-					fn(itm);
-				}
-			};
-	
-	addTreeFn(options.css, doc.addCSS.bind(doc));
-	addTreeFn(options.less, doc.addLESS.bind(doc));
-	addTreeFn(options.js, doc.addJS.bind(doc));
-	addTreeFn(options.images, doc.addImage.bind(doc));
-	addTreeFn(options.assets, doc.addAsset.bind(doc));
-	
-	if(options.imageTitle) {
-		doc.addImage(options.imageTitle);
-		doc.setImageTitle(path.basename(options.imageTitle));
-	}
+	var options = JSON.parse(fest);
 	
 	if(argv.x) {
-		doc.disableExtraction();
+		options.noExtraction = true;
 	}
 	
-	if(options.preMenu) {
-		if(options.preMenu instanceof Array) {
-			for(var p in options.preMenu) {
-				doc.addBeforeMenu(options.preMenu[p]);
-			}
-		} else {
-			doc.addBeforeMenu(options.preMenu);
-		}
-	}
-	if(options.postMenu) {
-		if(options.postMenu instanceof Array) {
-			for(var p in options.postMenu) {
-				doc.addAfterMenu(options.postMenu[p]);
-			}
-		} else {
-			doc.addAfterMenu(options.postMenu);
-		}
+	if(argv.s) {
+		options.singlePage = true;
 	}
 	
-	for(var p in options.pages)
-		doc.addPage($.GetRelativePath(manifest, options.pages[p]));
-	
-	doc.setTOCLevel(options.tocLevel || 6).render(argv.s || options.singlePage)
+	var doc = new FruitJS(options.name || "Documentation", manifest);
+	doc.render(path.resolve(argv.o))
 		.then(function () {
 				console.log('Files were rendered successfully and placed in the folder '+path.resolve(argv.o));
 			},
