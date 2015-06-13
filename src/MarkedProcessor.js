@@ -53,7 +53,7 @@ renderer.link = function (href, title, text) {
 	// If the link starts with *://, //, or /, we don't want to touch it.
 	// We'll assume URLs like this are not relative to our current folder
 	// location and are intentionally that way. No modifications!
-	if(renderer.doc.extractionEnabled() && !(externalRegex.test(href) || href[0] == '#')) {
+	if(renderer.doc.isExtractionEnabled() && !(externalRegex.test(href) || href[0] == '#')) {
 		var filename = decodeURI(href.split('?')[0].split('#')[0]), // Chop off anything after a ? or #
 			pfile = renderer.doc.getAbsolutePathFromRelative(filename);
 		if(fs.existsSync(pfile) && fs.statSync(pfile).isFile()) {
@@ -88,7 +88,7 @@ renderer.image = function (href, title, text) {
 	// If the link starts with *://, //, or /, we don't want to touch it.
 	// We'll assume URLs like this are not relative to our current folder
 	// location and are intentionally that way. No modifications!
-	if((!renderer.doc.extractionEnabled()) || externalRegex.test(href)) {
+	if((!renderer.doc.isExtractionEnabled()) || externalRegex.test(href)) {
 		return marked.Renderer.prototype.image.apply(this, arguments);
 	}
 	

@@ -24,8 +24,6 @@ describe('FruitJS Clean Execution', function () {
 	// For now we are simply going to run each and make sure we compile it properly without error.
 	// We are not doing any output checking at the moment
 	for(var t = 0, l = testManifestFiles.length; t < l; t++) {
-		// addTestFile(testManifestFiles[t], OutputFolder + '-' + t);
-		
 		describe(testManifestFiles[t], (function (testFile, output) {
 			
 			before(function (done) {
@@ -42,7 +40,7 @@ describe('FruitJS Clean Execution', function () {
 				}, done);
 			});
 			
-			it('should have the proper output folder ', function () {
+			it('should have the proper output folder', function () {
 				assert(fs.existsSync(output));
 			});
 			

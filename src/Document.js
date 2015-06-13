@@ -442,7 +442,7 @@ Doc.prototype.disableExtraction = function () {
 	return this;
 };
 
-Doc.prototype.extractionEnabled = function () {
+Doc.prototype.isExtractionEnabled = function () {
 	return this.__extract;
 };
 
