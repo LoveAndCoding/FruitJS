@@ -296,7 +296,7 @@ Doc.prototype.render = function (outputFolder, singlePage) {
 									output += allPages[p];
 								}
 								// Write out to the file
-								return $.PromiseWriter(self.__outputTo + $.sep + 'index.html', output + pieces[2]);
+								return $.PromiseWriter(outputFolder + $.sep + 'index.html', output + pieces[2]);
 							});
 					}
 				);
@@ -314,7 +314,7 @@ Doc.prototype.render = function (outputFolder, singlePage) {
 							
 							// Write out to the file
 							allWrite.push(
-									$.PromiseWriter(self.__outputTo + $.sep + filename, allPages[p])
+									$.PromiseWriter(outputFolder + $.sep + filename, allPages[p])
 								);
 						}
 						
