@@ -7,3 +7,8 @@ node_js:
 branches:
   only:
     - master
+addons:
+  code_climate:
+    repo_token: 4fffc4322b06a32898c1723cb47f836feeca943f6b5515d171a01afbbcf50fc6
+script: "npm run-script test-travis"
+after_script: codeclimate < coverage/lcov.info
