@@ -25,7 +25,8 @@
   "devDependencies": {
     "fs-extra": "~0.18.x",
     "mocha": "~2.2.5",
-    "istanbul": "~0.3.15"
+    "istanbul": "~0.3.15",
+    "coveralls": "~2.11.2"
   },
   "license": "MIT",
   "engines": {
