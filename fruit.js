@@ -19,7 +19,9 @@ function FruitJS (options, relativePath) {
 	this.path = relativePath;
 	this.document = new Document(options, relativePath);
 	
-	var doc = this.document,
+	var prevDir = process.cwd(),
+		
+		doc = this.document,
 		addTreeFn = function (arr, fn) {
 				for(var a in arr) {
 					addItemFn(arr[a], fn);
@@ -38,6 +40,8 @@ function FruitJS (options, relativePath) {
 					fn(itm);
 				}
 			};
+	
+	process.chdir(path.dirname(relativePath));
 	
 	addTreeFn(options.css, doc.addCSS.bind(doc));
 	addTreeFn(options.less, doc.addLESS.bind(doc));
@@ -76,6 +80,7 @@ function FruitJS (options, relativePath) {
 	for(var p in options.pages)
 		doc.addPage($.GetRelativePath(this.path, options.pages[p]));
 	
+	process.chdir(prevDir);
 }
 
 FruitJS.prototype.render = function(folder) {

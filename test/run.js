@@ -17,7 +17,7 @@ var execFile = require('child_process').execFile,
 		, "Menu/post.object.sub.manifest.json"
 		, "Menu/pre.object.sub.manifest.json"
 		, "Resources/automated.gathering.manifest.json"
-		// , "Resources/folder.gathering.manifest.json" -- Failing; see issue #30
+		, "Resources/folder.gathering.manifest.json"
 	];
 
 describe('FruitJS Clean Execution', function () {

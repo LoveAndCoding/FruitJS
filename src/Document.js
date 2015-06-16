@@ -329,16 +329,19 @@ Doc.prototype.render = function (outputFolder, singlePage) {
 };
 
 Doc.prototype.addLESS = function (file) {
+	file = this.getAbsolutePathFromRelative(file);
 	this.__less.push(file);
 	return this;
 };
 
 Doc.prototype.addCSS = function (file) {
+	file = this.getAbsolutePathFromRelative(file);
 	this.__css.push(file);
 	return this;
 };
 
 Doc.prototype.addJS = function (file) {
+	file = this.getAbsolutePathFromRelative(file);
 	this.__js.push(file);
 	return this;
 };

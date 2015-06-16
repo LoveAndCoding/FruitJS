@@ -4,6 +4,20 @@ var fs = require('fs'),
 	path = require('path'),
 	mkdirp = require('mkdirp');
 
+if(!path.isAbsolute) {
+	// Not quite a perfect polyfill, but close enough for us
+	path.isAbsolute = function (path) {
+		if(!path || typeof path !== 'string')
+			return false;
+		
+		if(process.platform.indexOf('win') >= 0) {
+			return !!path.match(/^([a-zA-Z]:|\/\/|\\\\)/);
+		}
+		
+		return path[0] === '/';
+	};
+}
+
 function PromiseReader ( file, encoding ) {
 	var encoding = typeof encoding != 'undefined' ? encoding : 'utf8';
 	var promise = rsvp.Promise(function (res, rej) {
@@ -54,6 +68,8 @@ function GetFileName ( location ) {
 }
 
 function GetRelativePath( origin, file ) {
+	if(path.isAbsolute(file))
+		return file;
 	return path.resolve(path.dirname(origin)+path.sep+file);
 }
 
