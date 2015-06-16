@@ -1,6 +1,6 @@
 #FruitJS
 
-[![Build Status](https://travis-ci.org/ktsashes/FruitJS.svg)](https://travis-ci.org/ktsashes/FruitJS)
+[![Build Status](https://travis-ci.org/ktsashes/FruitJS.svg)](https://travis-ci.org/ktsashes/FruitJS) [![Coverage Status](https://coveralls.io/repos/ktsashes/FruitJS/badge.svg?branch=master)](https://coveralls.io/r/ktsashes/FruitJS?branch=master)
 
 [Take a look at our documentation][1]
 
