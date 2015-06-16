@@ -8,7 +8,11 @@
     "fruitjs": "bin/cli"
   },
   "main": "./fruit.js",
-  "keywords": [],
+  "keywords": [
+    "markdown",
+    "documentation",
+    "docs"
+  ],
   "dependencies": {
     "rsvp": "2.x.x",
     "underscore": "1.5.x",
