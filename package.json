@@ -14,12 +14,12 @@
     "docs"
   ],
   "dependencies": {
-    "rsvp": "2.x.x",
-    "underscore": "1.5.x",
-    "less": "1.x.x",
-    "optimist": "0.6.x",
-    "mkdirp": "0.3.5",
-    "marked": "~0.3.1"
+    "rsvp": "~2.0.4",
+    "underscore": "~1.5.2",
+    "less": "~1.7.5",
+    "optimist": "~0.6.1",
+    "mkdirp": "~0.3.5",
+    "marked": "~0.3.3"
   },
   "scripts": {
     "test": "mocha --reporter spec --bail --check-leaks test",
