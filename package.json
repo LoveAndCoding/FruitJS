@@ -22,9 +22,9 @@
     "marked": "~0.3.3"
   },
   "scripts": {
-    "test": "mocha --reporter spec --bail --check-leaks test",
-    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/",
-    "test-travis": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/"
+    "test": "mocha --reporter spec --bail --check-leaks test/*.js test/Unit/*.js",
+    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/*.js test/Unit/*.js",
+    "test-travis": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/*.js test/Unit/*.js"
   },
   "devDependencies": {
     "fs-extra": "~0.18.x",
