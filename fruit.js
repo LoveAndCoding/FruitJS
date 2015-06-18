@@ -30,7 +30,7 @@ function FruitJS (options, relativePath) {
 		addItemFn = function (itm, fn) {
 				if(!fs.existsSync(itm)) {
 					console.error('File not found.', itm);
-					process.exit();
+					throw new Error('Unable to find file '+item);
 				} else if(fs.statSync(itm).isDirectory()) {
 					var sub = fs.readdirSync(itm);
 					for(var s in sub)
