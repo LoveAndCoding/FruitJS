@@ -234,28 +234,25 @@ Each phase is independently shippable behind a `next` dist-tag.
 
 ## Multi-Session Capture & Continuity
 
-A six-phase rewrite is well beyond one session. To make it resumable across many sessions (and possibly many authors / agents), work is captured in five places, each with a clear job:
+A six-phase rewrite is well beyond one session. To make it resumable across many sessions (and possibly many authors / agents), work is captured in four places, each with a clear job:
 
 1. **North-star RFC — this document, in the repo.** Lands as `docs/proposals/0001-fruitjs-2.0.md`. The canonical "what we're building and why". Strategic, not tactical. Edited only when high-level direction shifts.
 
-2. **`docs/ROADMAP.md` — thin index, dogfooded.** Lists each phase, its state (`not started` / `in progress` / `done`), and links to its epic issue and (once it exists) its tactical design doc. Living in `docs/` means it gets pulled into the dogfooded site once Phase 1 ships — visitors and agents both see it. That's intentional: the roadmap is part of the product surface.
+2. **`docs/ROADMAP.md` — thin index, dogfooded.** Lists each phase, its state (`not started` / `in progress` / `done`), and links to its tactical design doc once one exists. Living in `docs/` means it gets pulled into the dogfooded site once Phase 1 ships — visitors and agents both see it. That's intentional: the roadmap is part of the product surface.
 
-3. **Per-phase tactical docs — created lazily.** When a phase actually starts, write `docs/proposals/000N-phase-N-{name}.md` covering file-level changes, package boundaries, and acceptance criteria *for that phase*. Don't pre-write all six tactical docs — they'll drift before they're needed.
+3. **Per-phase tactical docs — created lazily.** When a phase actually starts, write `docs/proposals/000N-phase-N-{name}.md` covering file-level changes, package boundaries, and acceptance criteria *for that phase*. The tactical doc is also where the in-flight task checklist for that phase lives. Don't pre-write all six tactical docs — they'll drift before they're needed.
 
-4. **GitHub Issues — one epic per phase, sub-issues lazy.** Seven epic issues opened up front (Phase 0 → Phase 6), each with the phase summary and an acceptance-criteria checklist drawn from this RFC. Sub-issues for individual tasks are created only when their phase becomes active. A GitHub Project board groups them.
-
-5. **ADR log — `docs/proposals/decisions/`.** Every cross-phase decision (e.g. "unified over markdown-it", "federate the documented MCP server but not arbitrary MCP servers", "no v1 compat shim") gets a short ADR. New sessions read the ADR log to avoid re-litigating settled choices.
+4. **ADR log — `docs/proposals/decisions/`.** Every cross-phase decision (e.g. "unified over markdown-it", "federate the documented MCP server but not arbitrary MCP servers", "no v1 compat shim") gets a short ADR. New sessions read the ADR log to avoid re-litigating settled choices.
 
 ### Session start ritual
-A new session picks up by reading, in order: `docs/ROADMAP.md` → active phase's epic issue → that phase's tactical design doc (if one exists) → ADRs touching the area being worked on. With this ritual the RFC stays the strategic anchor while individual sessions stay focused on tactical work — nobody has to re-derive the architecture from scratch.
+A new session picks up by reading, in order: `docs/ROADMAP.md` → the active phase's tactical design doc (if one exists) → ADRs touching the area being worked on → the RFC for any cross-cutting context. With this ritual the RFC stays the strategic anchor while individual sessions stay focused on tactical work — nobody has to re-derive the architecture from scratch.
 
 ### v0 deliverable from this proposal
 The first commit out of *this* planning work touches only:
 
 - `docs/proposals/0001-fruitjs-2.0.md` — this document, copied verbatim from the plan file.
-- `docs/ROADMAP.md` — initial scaffold linking the seven phase epics, all marked "not started".
+- `docs/ROADMAP.md` — initial scaffold listing the seven phases, all marked "not started".
 - `docs/proposals/decisions/0001-clean-break-from-v1.md` — first ADR; captures the no-compat-shim decision.
-- (Separately, via GitHub MCP) seven epic issues opened, one per phase, each linking back to the RFC.
 
 No code changes, no `package.json` edits, no v1 deletions yet. The pre-existing `.gitattributes`/PNG corruption is *not* part of this commit; it gets fixed in its own change. Implementation work begins as Phase 0 in a follow-up session.
 
